@@ -6180,6 +6180,17 @@ body.modal-open {
   overflow-y: auto;
 } */
 
+img {
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.thumbnail {
+  pointer-events: auto !important;
+  /* Forces override */
+}
+
 /* Adjust main content to make space for modal */
 body.modal-open #mainpagearea {
   margin-right: 70%;
