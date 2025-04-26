@@ -1494,6 +1494,25 @@
         // Fetch product details
     }, 1000);
 
+    // Disable right-click
+    document.addEventListener('contextmenu', (e) => {
+        if (e.target.classList.contains('thumbnail')) {
+            e.preventDefault();
+            alert("Right-click is disabled to protect content.");
+        }
+    });
+
+    // Block F12/Ctrl+Shift+I (DevTools)
+    document.addEventListener('keydown', (e) => {
+        if (
+            e.key === 'F12' ||
+            (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+            (e.ctrlKey && e.key === 'u') // Block "View Source"
+        ) {
+            e.preventDefault();
+        }
+    });
+    // Modify your image handling to use Blob URLs
 </script>
 
 <script>
