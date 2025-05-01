@@ -17,6 +17,7 @@ const maxshipping = 90;
 const specialshipping = 75;
 const vanishedstock = false;
 const flippedimages = false; // if yes show the dot under the product in the list and navigate between its pthots
+const autopricehandle = true;
 
 // guest checkout
 const GuestEmail = "hancockstoreguest@gmail.com";
