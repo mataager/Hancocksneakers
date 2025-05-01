@@ -300,6 +300,10 @@ const brandsData = [
     logo: "https://cdn.worldvectorlogo.com/logos/birkenstock-30839.svg",
   },
   {
+    name: "Timberland",
+    logo: "https://cdn.worldvectorlogo.com/logos/timberland-1.svg",
+  },
+  {
     name: "Balenciaga",
     logo: "https://cdn.worldvectorlogo.com/logos/balenciaga2017logo.svg",
   },
