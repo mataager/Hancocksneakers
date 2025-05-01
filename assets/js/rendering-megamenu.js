@@ -292,6 +292,10 @@ const brandsData = [
     logo: "https://cdn.freelogovectors.net/wp-content/uploads/2023/03/golden-goose-logo-freelogovectors.net_.png",
   },
   {
+    name: "McQueen",
+    logo: "https://cdn.worldvectorlogo.com/logos/alexander-mcqueen.svg",
+  },
+  {
     name: "Birkenstock",
     logo: "https://cdn.worldvectorlogo.com/logos/birkenstock-30839.svg",
   },
