@@ -742,11 +742,12 @@
                 let productPriceHTML = '';
 
                 const salePrice = calculateSalePrice(originalPrice, saleAmount);
+                const originalPriceitem = calculateSalePrice(originalPrice, saleAmount);
                 if (saleAmount) {
                     prePriceHTML = `<p id="preprice" class="m-5 mb-10"><del class="pre-sale">${originalPrice} EGP</del></p>`;
                     productPriceHTML = `<p id="productPrice" class="m-5 mb-10">${salePrice} EGP</p>`;
                 } else {
-                    productPriceHTML = `<p id="productPrice" class="m-5 mb-10">${originalPrice} EGP</p>`;
+                    productPriceHTML = `<p id="productPrice" class="m-5 mb-10">${originalPriceitem} EGP</p>`;
                 }
 
                 prePriceElement.innerHTML = prePriceHTML;
