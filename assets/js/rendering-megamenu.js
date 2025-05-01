@@ -292,6 +292,18 @@ const brandsData = [
     logo: "https://cdn.freelogovectors.net/wp-content/uploads/2023/03/golden-goose-logo-freelogovectors.net_.png",
   },
   {
+    name: "Birkenstock",
+    logo: "https://cdn.worldvectorlogo.com/logos/birkenstock-30839.svg",
+  },
+  {
+    name: "Balenciaga",
+    logo: "https://cdn.worldvectorlogo.com/logos/balenciaga2017logo.svg",
+  },
+  {
+    name: " Dr Martens",
+    logo: "https://cdn.worldvectorlogo.com/logos/dr-martens.svg",
+  },
+  {
     name: "New Balance",
     logo: "https://cdn.worldvectorlogo.com/logos/new-balance-2.svg",
   },
