@@ -251,11 +251,11 @@ function openCartModal(productId) {
         const saleAmount = product["sale-amount"];
         const originalPrice = product["Product-Price"];
 
-        function calculateSalePrice(originalPrice, saleAmount) {
-          return (originalPrice * (1 - saleAmount / 100)).toFixed(2);
-        }
+        // function calculateSalePrice(originalPrice, saleAmount) {
+        //   return (originalPrice * (1 - saleAmount / 100)).toFixed(2);
+        // }
 
-        let salePrice = originalPrice;
+        let salePrice = calculateSalePrice(originalPrice, saleAmount);
 
         if (saleAmount) {
           salePrice = calculateSalePrice(originalPrice, saleAmount);
