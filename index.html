@@ -194,36 +194,28 @@
                 </div>
             </div>
             <script>
-
-                // Function to generate random discount between 5% and 30%
-                function getRandomDiscount() {
-                    return Math.floor(Math.random() * 26) + 5; // 5-30%
-                }
-
                 // Function to create brand items
                 function createBrandItems() {
                     const brandsScroller = document.getElementById('brandsScroller');
 
                     // Create first set of brands
                     brandsData.forEach(brand => {
-                        const discount = getRandomDiscount();
                         brandsScroller.innerHTML += `
-                                <div class="brand-item" onclick="brand('${brand.name.replace(/'/g, "\\'")}')">
-                                    <img src="${brand.logo}" alt="${brand.name}" class="brand-logo">
-                                </div>
-                            `;
+      <div class="brand-item" onclick="brand('${brand.name.replace(/'/g, "\\'")}')">
+        <img src="${brand.logo}" alt="${brand.name}" class="brand-logo">
+      
+      </div>
+    `;
                     });
 
                     // Create duplicate set for seamless looping
                     brandsData.forEach(brand => {
-                        const discount = getRandomDiscount();
                         brandsScroller.innerHTML += `
-                                <div class="brand-item">
-                                    <img src="${brand.logo}" alt="${brand.name}" class="brand-logo">
-                                    <span class="brand-name">${brand.name}</span>
-                                    <span class="discount-badge">-${discount}%</span>
-                                </div>
-                            `;
+      <div class="brand-item" onclick="brand('${brand.name.replace(/'/g, "\\'")}')">
+        <img src="${brand.logo}" alt="${brand.name}" class="brand-logo">
+       
+      </div>
+    `;
                     });
                 }
 
