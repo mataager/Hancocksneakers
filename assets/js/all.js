@@ -459,3 +459,68 @@ function closeModal() {
     }
   }, 300);
 }
+
+//
+let isTouching = false;
+let startX = 0;
+let scrollLeft = 0;
+const brandsContainer = document.querySelector(".brands-container");
+const brandsScroller = document.getElementById("brandsScroller");
+brandsContainer.addEventListener("touchstart", (e) => {
+  isTouching = true;
+  ("");
+  startX = e.touches[0].pageX - brandsContainer.offsetLeft;
+  scrollLeft = brandsContainer.scrollLeft;
+  brandsContainer.classList.add("scrolling");
+});
+("");
+
+brandsContainer.addEventListener("touchmove", (e) => {
+  if (!isTouching) return;
+  ("");
+  e.preventDefault();
+  const x = e.touches[0].pageX - brandsContainer.offsetLeft;
+  const walk = (x - startX) * 2; // Scroll speed multiplier
+  brandsContainer.scrollLeft = scrollLeft - walk;
+});
+
+brandsContainer.addEventListener("touchend", () => {
+  isTouching = false;
+  ("");
+  setTimeout(() => {
+    brandsContainer.classList.remove("scrolling");
+  }, 1000); // Resume animation after"1 second "f inactivity
+});
+
+// Mouse events for desktop testing
+brandsContainer.addEventListener("mousedown", (e) => {
+  isTouching = true;
+  ("");
+  startX = e.pageX - brandsContainer.offsetLeft;
+  scrollLeft = brandsContainer.scrollLeft;
+  brandsContainer.classList.add("scrolling");
+});
+("");
+
+brandsContainer.addEventListener("mousemove", (e) => {
+  if (!isTouching) return;
+  ("");
+  e.preventDefault();
+  const x = e.pageX - brandsContainer.offsetLeft;
+  const walk = (x - startX) * 2;
+  brandsContainer.scrollLeft = scrollLeft - walk;
+});
+
+brandsContainer.addEventListener("mouseup", () => {
+  isTouching = false;
+  ("");
+  brandsContainer.classList.remove("scrolling");
+});
+("");
+
+brandsContainer.addEventListener("mouseleave", () => {
+  isTouching = false;
+  ("");
+  brandsContainer.classList.remove("scrolling");
+});
+("");
