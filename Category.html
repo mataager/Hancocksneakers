@@ -20,7 +20,25 @@
     <script src="./assets/js/search-product.js"></script>
     <script src="./assets/jq/jquery.js"></script>
     <script src="./assets/js/image-error.js"></script>
-
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1700714150821720');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=1700714150821720&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 
 <div class="preloader" id="preloader">
@@ -209,7 +227,8 @@
 
 </main>
 
-<footer class="footer">
+<footer class="footer animate-on-scroll">
+
     <div class="footer-top section">
         <div class="container">
 
@@ -257,54 +276,50 @@
 
                 <ul class="footer-list">
 
-                    <li>
+                    <li class="animate-on-scroll">
                         <p class="footer-list-title">Contact Us</p>
                     </li>
 
-                    <!-- <li>
-                        <address class="footer-link">
+                    <li class="animate-on-scroll">
+                        <address class="footer-link hidden">
                             <ion-icon name="location" role="img" class="md hydrated" aria-label="location"></ion-icon>
 
-                            <span class="footer-link-text hidden">
+                            <span class="footer-link-text">
                                 type any addrress
                             </span>
                         </address>
-                    </li> -->
+                    </li>
 
-                    <li>
+                    <li class="animate-on-scroll">
                         <a href="tel:" id="store-call" class="footer-link">
                             <ion-icon name="call" role="img" class="md hydrated" aria-label="call"></ion-icon>
                             <span id="store-number" class="footer-link-text"></span>
                         </a>
                     </li>
 
-                    <li>
+                    <li class="animate-on-scroll">
                         <a href="mailto:" id="store-email-link" class="footer-link">
                             <ion-icon name="mail" role="img" class="md hydrated" aria-label="mail"></ion-icon>
                             <span id="store-email" class="footer-link-text"></span>
                         </a>
                     </li>
 
-                    <li>
+                    <li class="animate-on-scroll">
                         <a href="#" class="footer-link" id="report-bug-btn">
                             <ion-icon name="bug"></ion-icon>
                             <span class="footer-link-text">Report a problem or a bug</span>
                         </a>
                     </li>
-
                 </ul>
+                <div class="footer-list hidden">
 
+                    <p class="footer-list-title animate-on-scroll">Newsletter</p>
 
-
-                <div class="footer-list">
-
-                    <p class="footer-list-title">Newsletter</p>
-
-                    <p class="newsletter-text">
+                    <p class="newsletter-text animate-on-scroll">
                         Send us your email to keeping up with our latest updates..
                     </p>
 
-                    <form action="" class="newsletter-form">
+                    <form action="" class="newsletter-form animate-on-scroll">
                         <input type="email" name="email" required="" placeholder="Email Address"
                             class="newsletter-input">
 
@@ -312,8 +327,22 @@
                     </form>
 
                 </div>
-                <ul class="footer-list">
-                    <p class="footer-list-title">Matager</p>
+                <div class="footer-list">
+                    <p class="footer-list-title animate-on-scroll">Payment Options</p>
+                    <div class="payment-options animate-on-scroll">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/InstaPay_Logo.png" alt="InstaPay"
+                            class="payment-icon pointer">
+                        <img src="https://www.svgrepo.com/show/328127/visa.svg" alt="Visa" class="payment-icon pointer">
+                        <img src="https://image.pngaaa.com/548/5179548-middle.png" alt="Mastercard"
+                            class="payment-icon pointer">
+                    </div>
+                    <p class="newsletter-text animate-on-scroll pointer" onclick="openPolicyModal()">
+                        Shipping & Return Policy
+                    </p>
+                </div>
+
+                <ul class="footer-list animate-on-scroll">
+                    <p class="footer-list-title animate-on-scroll">Matager</p>
                     <li>
                         <a href="https://matager.online/PrivacyPolicy.html" class="footer-link">
                             <span class="footer-link-text">privacy policy</span>
@@ -335,6 +364,9 @@
             <img src="./assets/images/powerd by matager black.svg" width="100px">
         </a>
     </div>
+
+
+
 </footer>
 
 

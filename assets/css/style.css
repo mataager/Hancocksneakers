@@ -6564,6 +6564,19 @@ body.modal-open #mainpagearea {
   background-color: transparent;
 }
 
+.ShippingReturnbtn {
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: x-small;
+  height: 30px;
+  padding: 5px 16px;
+  color: #19191a;
+  cursor: pointer;
+  font-size: 10px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+  background-color: transparent;
+}
+
 .space-evenly {
   justify-content: space-evenly;
 }
@@ -7088,6 +7101,133 @@ body.modal-open::after {
   }
 }
 
-#suggestions{
+#suggestions {
   z-index: 10;
+}
+
+.policy-list {
+  list-style-type: none;
+  padding-left: 5px;
+  margin: 15px 0;
+}
+
+.policy-item {
+  margin-bottom: 12px;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 20px;
+}
+
+.policy-icon {
+  position: absolute;
+  left: 0;
+  color: #555;
+}
+
+.faq-item h4 {
+  transition: color 0.2s;
+}
+
+.faq-item h4:hover {
+  color: #333 !important;
+}
+
+.faq-answer {
+  transition: all 0.3s ease;
+}
+
+.brands-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 20px 0;
+  background-color: white;
+}
+
+.brands-scroller {
+  display: flex;
+  width: auto;
+  /* Changed from max-content */
+  animation: scroll 5s linear infinite;
+  will-change: transform;
+  /* For smoother animation */
+}
+
+.brand-item {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 30px;
+  min-width: 120px;
+  text-align: center;
+  flex-shrink: 0;
+  /* Prevent items from shrinking */
+}
+
+.brand-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  padding: 15px;
+}
+
+.brand-name {
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.discount-badge {
+  background-color: #ff4444;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.brands-container:hover .brands-scroller {
+  animation-play-state: paused;
+}
+
+.payment-options {
+  display: flex;
+  gap: 15px;
+  margin: 10px 0;
+  align-items: center;
+}
+
+.payment-icon {
+  width: 50px;
+  height: auto;
+  max-height: 30px;
+  object-fit: contain;
+  filter: grayscale(30%);
+  transition: all 0.3s ease;
+}
+
+.payment-icon:hover {
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
+.footer-list-title {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
 }

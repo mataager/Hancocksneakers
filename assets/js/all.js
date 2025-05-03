@@ -318,3 +318,144 @@ window.updateStoreHints = async function (newConfig) {
   Object.assign(storeHintsConfig, newConfig);
   await renderStoreHints();
 };
+
+//shipping and reurn policy
+function openPolicyModal() {
+  // Create preloader overlay if it doesn't exist
+  let preloader = document.getElementById("preloader-overlay");
+  if (!preloader) {
+    preloader = document.createElement("div");
+    preloader.id = "preloader-overlay";
+    preloader.className = "preloader-overlay";
+    preloader.innerHTML = '<div class="spinner"></div>';
+    document.body.appendChild(preloader);
+  }
+
+  preloader.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+
+  // Start timer for minimum 1 second
+  const minLoadTime = 1000;
+  const startTime = Date.now();
+
+  setTimeout(() => {
+    const elapsedTime = Date.now() - startTime;
+    const remainingTime = Math.max(0, minLoadTime - elapsedTime);
+
+    setTimeout(() => {
+      // Fade out preloader
+      preloader.classList.add("hidden");
+
+      // Prepare modal
+      const modal = document.querySelector(".modal");
+      const modalContent = document.querySelector(".modal-content");
+
+      // Set modal position and styles
+      modal.style.display = "block";
+      document.body.style.overflow = "hidden";
+
+      // Policy content with improved list styling
+      modalContent.innerHTML = `
+        <div class="flex justify-content-space-between width-available modal-header">
+          <div class="flex center flex-end" onclick="closeModal()">
+            <button style="margin: 0px; border-radius: 0px 8px 0px 8px; background: initial !important; color:#333;" type="button" class="Add-to-Cart" id="closeButton">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="policy-content" style="padding: 20px; max-height: 80vh; overflow-y: auto;">
+          <h2 style="margin-bottom: 20px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">Return Policy</h2>
+          <ul class="policy-list">
+            <li class="policy-item"><span class="policy-icon">•</span> You can only return the Order/Item within 24 hours after receiving your order.</li>
+            <li class="policy-item"><span class="policy-icon">•</span> When returned, the item must be in the same condition as received.</li>
+            <li class="policy-item"><span class="policy-icon">•</span> Shipping fees are non-refundable.</li>
+            <li class="policy-item"><span class="policy-icon">•</span> You can try the product before making a payment. If it doesn't fit or you don't like it, you can return it directly with the delivery agent.</li>
+          </ul>
+          
+          <div class="arabic-policy" style="margin-top: 30px; direction: rtl; text-align: right;">
+            <h3 style="margin-bottom: 15px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">سياسة الإرجاع</h3>
+            <ul class="policy-list" style="padding-right: 20px;">
+              <li class="policy-item"><span class="policy-icon">•</span> يمكنك تقديم على إرجاع الطلب / المنتج بعد استلامه خلال 24 ساعة من الاستلام</li>
+              <li class="policy-item"><span class="policy-icon">•</span> رسوم الشحن غير قابلة للاسترداد</li>
+              <li class="policy-item"><span class="policy-icon">•</span> يمكنك تجربة المنتج قبل الدفع. وإذا لم يكن مناسبًا أو لم يعجبك، يمكنك إرجاعه مباشرة مع مندوب التوصيل</li>
+            </ul>
+          </div>
+          
+          <div class="faq-section" style="margin-top: 40px;">
+            <h3 style="margin-bottom: 20px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">Frequently Asked Questions</h3>
+            
+            <div class="faq-item" style="margin-bottom: 20px;">
+              <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► How to place an Order?</h4>
+              <div class="faq-answer" style="display: none; padding-left: 20px; color: #666;">
+                <p>To place an order, simply browse our products, select the items you want, and proceed to checkout.</p>
+              </div>
+            </div>
+            
+            <div class="faq-item" style="margin-bottom: 20px;">
+              <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► What are the Installment options?</h4>
+              <div class="faq-answer" style="display: none; padding-left: 20px; color: #666;">
+                <p>We offer various installment plans through select payment providers. Options will be shown at checkout.</p>
+              </div>
+            </div>
+            
+            <div class="faq-item" style="margin-bottom: 20px;">
+              <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► Can I edit or cancel my order?</h4>
+              <div class="faq-answer" style="display: none; padding-left: 20px; color: #666;">
+                <p>You can edit or cancel your order within 1 hour of placement by contacting customer service.</p>
+              </div>
+            </div>
+            
+            <div class="faq-item" style="margin-bottom: 20px;">
+              <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► What is the estimated delivery?</h4>
+              <div class="faq-answer" style="display: none; padding-left: 20px; color: #666;">
+                <p>Delivery typically takes 3-5 business days within major cities, and 5-7 days for other areas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Animate modal in from right
+      setTimeout(() => {
+        modal.classList.add("show");
+      }, 10);
+
+      // Close handler
+      modal.addEventListener("click", function (event) {
+        if (!modalContent.contains(event.target)) {
+          closeModal();
+        }
+      });
+    }, remainingTime);
+  }, 10);
+}
+
+// FAQ toggle function
+function toggleFAQ(element) {
+  const answer = element.nextElementSibling;
+  if (answer.style.display === "none" || !answer.style.display) {
+    answer.style.display = "block";
+    element.innerHTML = element.innerHTML.replace("►", "▼");
+  } else {
+    answer.style.display = "none";
+    element.innerHTML = element.innerHTML.replace("▼", "►");
+  }
+}
+// Reuse the same closeModal function
+function closeModal() {
+  const modal = document.querySelector(".modal");
+  const preloader = document.getElementById("preloader-overlay");
+
+  modal.classList.remove("show");
+
+  setTimeout(() => {
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+    document.body.classList.remove("modal-open");
+
+    if (preloader) {
+      preloader.classList.add("hidden");
+    }
+  }, 300);
+}
