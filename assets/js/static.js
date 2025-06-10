@@ -7,17 +7,21 @@ const storePhoneNum = "+011 4970 9657";
 const storePhoneNum2 = "";
 const storeEmail = "Shadyhashim71@gmail.com";
 // const storeGender = ["Men", "Women", "Kids"];
-const storeGender = ["Men", "Women"];
+const storeGender = ["Men"];
 const productnavbar = ["no"];
 const brandsnavbar = ["yes"];
 const storeType = "clothing"; // clothing or footwear
-const freeshipping = "5000";
+//shipping config
+const maincities = ["Cairo", "Giza", "Alexandria"];
+const freeshipping = "6000";
 const minshipping = 65;
 const maxshipping = 90;
 const specialshipping = 75;
 const vanishedstock = false;
-const flippedimages = false; // if yes show the dot under the product in the list and navigate between its pthots
+const outofstock = true;
+const flippedimages = false;
 const autopricehandle = true;
+const codfees = 10;
 
 // guest checkout
 const GuestEmail = "hancockstoreguest@gmail.com";

@@ -1,43 +1,3 @@
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDss53pHibCpqo87_1bhoUHkf8Idnj-Fig",
-//   authDomain: "matager-f1f00.firebaseapp.com",
-//   projectId: "matager-f1f00",
-//   storageBucket: "matager-f1f00.appspot.com",
-//   messagingSenderId: "922824110897",
-//   appId: "1:922824110897:web:b7978665d22e2d652e7610",
-// };
-
-// // Initialize Firebase
-// firebase.initializeApp(firebaseConfig);
-// const auth = firebase.auth();
-//
-// async function googleSignIn() {
-//   const provider = new firebase.auth.GoogleAuthProvider();
-//   try {
-//     const result = await firebase.auth().signInWithPopup(provider);
-//     Swal.fire({
-//       icon: "success",
-//       title: "Signed in successfully!",
-//       showConfirmButton: false,
-//       timer: 1500, // Close the alert after 1.5 seconds
-//     });
-//     return result.user;
-//   } catch (error) {
-//     console.error("Error signing in:", error);
-//     Swal.fire({
-//       icon: "error",
-//       title: "Sign In Failed",
-//       text: "There was a problem signing you in. Please try again!",
-//       showConfirmButton: false,
-//       timer: 1500, // Close the alert after 1.5 seconds
-//     });
-//     return null;
-//   }
-// }
-//
-
-//main
-
 async function submitOrder() {
   try {
     // Ensure the user is signed in and fetch their token
@@ -50,7 +10,7 @@ async function submitOrder() {
       modalContent.innerHTML = `
       <div class="guestmodalarea">
         <h2>Sign in for better experience</h2>
-        <p>You can sign in to save your details,track your order,add items to favourite etc.</p>
+        <p class="mt-30">You can sign in to save your details,track your order,add items to favourite etc.</p>
         <div class="modal-buttons">
           <button id="goToAccount" class="modal-btn Gotoaccountbtn">Go to Account</button>
         </div>
@@ -134,6 +94,42 @@ async function submitOrder() {
           });
           continue;
         }
+        // if (vanishedstock) {
+        //   const stockQty =
+        //     productData.sizes[item.productSize]?.[item.productColor]?.qty || 0;
+
+        //   if (stockQty < item.quantity) {
+        //     unavailableItems.push({
+        //       title: item.title,
+        //       photourl: item.photourl,
+        //       reason: `Requested quantity (${item.quantity}) exceeds available stock (${stockQty}).`,
+        //     });
+        //     continue;
+        //   }
+
+        //   // Update the stock in Firebase
+        //   const newStockQty = stockQty - item.quantity;
+
+        //   if (newStockQty > 0) {
+        //     await fetch(
+        //       `${url}/Stores/${uid}/Products/${item.id}/sizes/${item.productSize}/${item.productColor}.json?auth=${idToken}`,
+        //       {
+        //         method: "PATCH",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({ qty: newStockQty }),
+        //       }
+        //     );
+        //   } else {
+        //     // Delete the size/color if stock is depleted
+        //     await fetch(
+        //       `${url}/Stores/${uid}/Products/${item.id}.json?auth=${idToken}`,
+        //       {
+        //         method: "DELETE",
+        //       }
+        //     );
+        //   }
+        // }
+
         if (vanishedstock) {
           const stockQty =
             productData.sizes[item.productSize]?.[item.productColor]?.qty || 0;
@@ -160,7 +156,7 @@ async function submitOrder() {
               }
             );
           } else {
-            // Delete the size/color if stock is depleted
+            // Delete the size/color if stock is depleted and vanishedstock is true
             await fetch(
               `${url}/Stores/${uid}/Products/${item.id}.json?auth=${idToken}`,
               {
@@ -168,6 +164,35 @@ async function submitOrder() {
               }
             );
           }
+        }
+
+        if (outofstock && !vanishedstock) {
+          const stockQty =
+            productData.sizes[item.productSize]?.[item.productColor]?.qty || 0;
+
+          if (stockQty < item.quantity) {
+            unavailableItems.push({
+              title: item.title,
+              photourl: item.photourl,
+              reason: `Requested quantity (${item.quantity}) exceeds available stock (${stockQty}).`,
+            });
+            continue;
+          }
+
+          // Update the stock in Firebase
+          const newStockQty = stockQty - item.quantity;
+
+          // For outofstock, we always set the quantity (either reduced or 0 if depleted)
+          await fetch(
+            `${url}/Stores/${uid}/Products/${item.id}/sizes/${item.productSize}/${item.productColor}.json?auth=${idToken}`,
+            {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                qty: newStockQty > 0 ? newStockQty : 0,
+              }),
+            }
+          );
         }
 
         updatedCart.push(item);
@@ -201,6 +226,7 @@ async function submitOrder() {
       const personalInfo = await getPersonalInfo(Customeruid, idToken);
       const shippingFees =
         parseFloat(localStorage.getItem("shippingFees")) || 0;
+      const matagerCut = parseFloat(localStorage.getItem("cut")) || 0;
       const payment = localStorage.getItem("Payment") || "N/A";
 
       // Construct a preliminary order object
@@ -263,93 +289,6 @@ async function submitOrder() {
   }
 }
 
-//submit order in cart as guest
-// async function guestSubmitorder() {
-//   const modal = document.querySelector(".modal");
-//   const modalContent = document.querySelector(".modal-content");
-//   const body = document.body;
-
-//   // Set the modal content for guest checkout form
-//   modalContent.innerHTML = `
-//     <div class="guestmodalarea">
-//     <button type="button"  id="cancelGuestOrder">
-//               <i class="bi bi-x-lg"></i>
-//           </button>
-//       <h2>Guest Checkout</h2>
-//       <form class="mt-10" id="guestCheckoutForm">
-//         <div class="form-group">
-//           <input type="text" id="guest-name" class="form-input" placeholder="Full Name" required>
-//         </div>
-//         <div class="form-group">
-//           <input type="tel" id="guest-phone1" class="form-input" placeholder="Phone Number (required)" required>
-//         </div>
-//         <div class="form-group">
-//           <input type="tel" id="guest-phone2" class="form-input" placeholder="Alternative Phone (optional)">
-//         </div>
-//         <div class="form-group">
-//           <input type="text" id="Gityandgovernment" class="form-input" placeholder="City/Government : Giza/Dokki">
-//         </div>
-//         <div class="form-group">
-//           <textarea id="guest-address" class="form-textarea" placeholder="Full Address" required></textarea>
-//         </div>
-//         <div class="modal-buttons">
-//           <button type="submit" id="submitGuestOrder" class="modal-btn suborderasguest">Order Now</button>
-//         </div>
-//       </form>
-//     </div>
-//   `;
-
-//   // Show the modal and disable background interactions
-//   body.classList.add("modal-open");
-//   modal.classList.add("show");
-
-//   // Handle form submission
-//   document
-//     .getElementById("guestCheckoutForm")
-//     .addEventListener("submit", async (e) => {
-//       e.preventDefault();
-
-//       const name = document.getElementById("guest-name").value;
-//       const phone1 = document.getElementById("guest-phone1").value;
-//       const phone2 = document.getElementById("guest-phone2").value;
-//       const Gityandgovernment =
-//         document.getElementById("Gityandgovernment").value;
-//       const address = document.getElementById("guest-address").value;
-
-//       if (!name || !phone1 || !address || !Gityandgovernment) {
-//         alert("Please fill all required fields");
-//         return;
-//       }
-
-//       // Show preloader
-//       document.getElementById("preloader").classList.remove("hidden");
-
-//       // Close modal
-//       closeModal();
-
-//       // Here you would continue with your order processing logic
-//       // using the collected guest information (name, phone1, phone2, address)
-//       // ...
-//     });
-
-//   // Handle cancel button
-//   document.getElementById("cancelGuestOrder").addEventListener("click", () => {
-//     closeModal();
-//   });
-
-//   // Close modal when clicking outside content
-//   modal.addEventListener("click", (e) => {
-//     if (e.target === modal) {
-//       closeModal();
-//     }
-//   });
-
-//   function closeModal() {
-//     modal.classList.remove("show");
-//     body.classList.remove("modal-open");
-//   }
-// }
-
 async function guestSubmitorder() {
   try {
     const modal = document.querySelector(".modal");
@@ -370,7 +309,7 @@ async function guestSubmitorder() {
     // Show guest checkout form modal
     modalContent.innerHTML = `
       <div class="guestmodalarea">
-        <button type="button" id="cancelGuestOrder">
+        <button type="button" class="modalbtnR" id="cancelGuestOrder">
           <i class="bi bi-x-lg"></i>
         </button>
         <h2>Guest Checkout</h2>
@@ -385,14 +324,36 @@ async function guestSubmitorder() {
             <input type="tel" id="guest-phone2" class="form-input" placeholder="Alternative Phone (optional)">
           </div>
           <div class="form-group">
-            <input type="text" id="Gityandgovernment" class="form-input" placeholder="City/Government" required>
-          </div>
+  <select id="Gityandgovernment" class="form-input bg-white" required>
+    <option value="" disabled selected>Select your Government</option>
+    <option value="Cairo">Cairo</option>
+    <option value="Giza">Giza</option>
+    <option value="Alexandria">Alexandria</option>
+    <option value="Port Said">Port Said</option>
+    <option value="Suez">Suez</option>
+    <option value="Damietta">Damietta</option>
+    <option value="Fayoum">Fayoum</option>
+    <option value="Dakahlia">Dakahlia</option>
+    <option value="Sharqia">Sharqia</option>
+    <option value="Qalyubia">Qalyubia</option>
+    <option value="Kafr El Sheikh">Kafr El Sheikh</option>
+    <option value="Gharbia">Gharbia</option>
+    <option value="Monufia">Monufia</option>
+    <option value="Beheira">Beheira</option>
+    <option value="Ismailia">Ismailia</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
           <div class="form-group">
             <textarea id="guest-address" class="form-textarea" placeholder="Full Address" required></textarea>
           </div>
-          <div class="form-group">
+          <div class="form-group flex center">
+           <div class="Addnotesbtn" id="Addnotesbtn" onclick="handleNotesToggle()">Add Notes <i class="bi bi-journal-plus"></i></div>
+           </div>
+           <div class="form-group hidden" id="orderNotes">
             <textarea id="guest-notes" class="form-textarea mt-10" placeholder="Order Notes (optional)"></textarea>
           </div>
+          <div id="shippingFeesDisplaychecout"></div>
           <div class="modal-buttons">
             <button type="submit" id="submitGuestOrder" class="modal-btn suborderasguest">
               <span id="submitButtonText">Place Order</span>
@@ -404,7 +365,7 @@ async function guestSubmitorder() {
         </form>
       </div>
     `;
-
+    renderShippingFeesDisplay();
     // Show the modal
     body.classList.add("modal-open");
     modal.classList.add("show");
@@ -473,6 +434,43 @@ async function guestSubmitorder() {
               });
               continue;
             }
+            // if (vanishedstock) {
+            //   const stockQty =
+            //     productData.sizes[item.productSize]?.[item.productColor]?.qty ||
+            //     0;
+
+            //   if (stockQty < item.quantity) {
+            //     unavailableItems.push({
+            //       title: item.title,
+            //       photourl: item.photourl,
+            //       reason: `Requested quantity (${item.quantity}) exceeds available stock (${stockQty}).`,
+            //     });
+            //     continue;
+            //   }
+
+            //   // Update stock in Firebase
+            //   const newStockQty = stockQty - item.quantity;
+
+            //   if (newStockQty > 0) {
+            //     await fetch(
+            //       `${url}/Stores/${uid}/Products/${item.id}/sizes/${item.productSize}/${item.productColor}.json?auth=${idToken}`,
+            //       {
+            //         method: "PATCH",
+            //         headers: { "Content-Type": "application/json" },
+            //         body: JSON.stringify({ qty: newStockQty }),
+            //       }
+            //     );
+            //   } else {
+            //     // Delete the size/color if stock is depleted
+            //     await fetch(
+            //       `${url}/Stores/${uid}/Products/${item.id}/sizes/${item.productSize}/${item.productColor}.json?auth=${idToken}`,
+            //       {
+            //         method: "DELETE",
+            //       }
+            //     );
+            //   }
+            // }
+
             if (vanishedstock) {
               const stockQty =
                 productData.sizes[item.productSize]?.[item.productColor]?.qty ||
@@ -487,7 +485,7 @@ async function guestSubmitorder() {
                 continue;
               }
 
-              // Update stock in Firebase
+              // Update the stock in Firebase
               const newStockQty = stockQty - item.quantity;
 
               if (newStockQty > 0) {
@@ -500,9 +498,9 @@ async function guestSubmitorder() {
                   }
                 );
               } else {
-                // Delete the size/color if stock is depleted
+                // Delete the size/color if stock is depleted and vanishedstock is true
                 await fetch(
-                  `${url}/Stores/${uid}/Products/${item.id}/sizes/${item.productSize}/${item.productColor}.json?auth=${idToken}`,
+                  `${url}/Stores/${uid}/Products/${item.id}.json?auth=${idToken}`,
                   {
                     method: "DELETE",
                   }
@@ -510,6 +508,35 @@ async function guestSubmitorder() {
               }
             }
 
+            if (outofstock && !vanishedstock) {
+              const stockQty =
+                productData.sizes[item.productSize]?.[item.productColor]?.qty ||
+                0;
+
+              if (stockQty < item.quantity) {
+                unavailableItems.push({
+                  title: item.title,
+                  photourl: item.photourl,
+                  reason: `Requested quantity (${item.quantity}) exceeds available stock (${stockQty}).`,
+                });
+                continue;
+              }
+
+              // Update the stock in Firebase
+              const newStockQty = stockQty - item.quantity;
+
+              // For outofstock, we always set the quantity (either reduced or 0 if depleted)
+              await fetch(
+                `${url}/Stores/${uid}/Products/${item.id}/sizes/${item.productSize}/${item.productColor}.json?auth=${idToken}`,
+                {
+                  method: "PATCH",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    qty: newStockQty > 0 ? newStockQty : 0,
+                  }),
+                }
+              );
+            }
             updatedCart.push(item);
             cartTotal += (parseFloat(item.price) || 0) * item.quantity;
           }
@@ -536,6 +563,12 @@ async function guestSubmitorder() {
             return;
           }
 
+          const shippingFeeElement = document.getElementById(
+            "shipping-fees-guest"
+          );
+          const shippingFee = shippingFeeElement
+            ? parseInt(shippingFeeElement.dataset.fee) || 0
+            : 0;
           // Get shipping fees (you might want to calculate this differently for guests)
 
           const payment = localStorage.getItem("Payment") || "N/A";
@@ -555,7 +588,7 @@ async function guestSubmitorder() {
               city: city,
               notes: notes || "N/A",
             },
-            shippingFees: parseInt(maxshipping, 10),
+            shippingFees: shippingFee,
             isGuest: true,
           };
 
@@ -715,5 +748,154 @@ async function addOrderToCustomerHistory(Customeruid, idToken, order) {
   } catch (error) {
     console.error("Error updating order history:", error);
     throw error; // Rethrow the error to handle it in the calling function
+  }
+}
+function handleNotesToggle() {
+  const Addnotesbtn = document.getElementById("Addnotesbtn");
+  const orderNotesTextArea = document.getElementById("orderNotes");
+  if (orderNotesTextArea.classList.contains("hidden")) {
+    // Show notes
+    orderNotesTextArea.classList.remove("hidden");
+
+    // Force reflow to enable transition
+    void orderNotesTextArea.offsetHeight;
+
+    // Add show class to trigger transition
+    orderNotesTextArea.classList.add("show");
+
+    // Update button
+    Addnotesbtn.innerHTML = 'Hide Notes <i class="bi bi-journal-minus"></i>';
+
+    // Focus textarea
+    setTimeout(() => {
+      const textarea = orderNotesTextArea.querySelector("textarea");
+      if (textarea) textarea.focus();
+    }, 100);
+  } else {
+    // Start hiding process
+    orderNotesTextArea.classList.remove("show");
+
+    // After transition completes
+    setTimeout(() => {
+      orderNotesTextArea.classList.add("hidden");
+    }, 300);
+
+    // Update button immediately
+    Addnotesbtn.innerHTML = 'Add Notes <i class="bi bi-journal-plus"></i>';
+  }
+}
+function renderShippingFeesDisplay() {
+  const container = document.getElementById("shippingFeesDisplaychecout");
+  const cartTotalElement = document.getElementById("cart-total");
+  const citySelect = document.getElementById("Gityandgovernment");
+
+  if (!container) {
+    console.error("Shipping fees container not found");
+    return;
+  }
+
+  // Get cart total value (remove " EGP" and convert to number)
+  let cartTotal = 0;
+  if (cartTotalElement) {
+    cartTotal =
+      parseFloat(cartTotalElement.textContent.replace(" EGP", "")) || 0;
+  }
+
+  // Check if cart qualifies for free shipping
+  const qualifiesForFreeShipping = cartTotal >= parseFloat(freeshipping);
+
+  // Create shipping display HTML
+  let shippingHtml = "";
+  if (qualifiesForFreeShipping) {
+    shippingHtml = `
+      <p id="shippingText" class="BuyItNowForm-shipping-message">
+        <span class="BuyItNowForm-shipping-message">You've got free shipping!</span> 
+        (Order amount exceeds ${freeshipping} EGP)
+      </p>
+      <p id="shipping-fees-guest" data-fee="0" style="display: none;">free</p>
+    `;
+  } else {
+    // Default message before city is selected
+    shippingHtml = `
+      <p id="shippingText" class="BuyItNowForm-shipping-message">
+        Please select your government to calculate shipping fees
+      </p>
+      <p id="shipping-fees-guest" data-fee="0" style="display: none;"></p>
+    `;
+  }
+
+  container.innerHTML = `
+    <div class="shippingFeesDisplay">
+      ${shippingHtml}
+    </div>
+  `;
+
+  // Add event listener if city select exists
+  if (citySelect) {
+    citySelect.addEventListener("change", updateShippingFeesguestcheckout);
+  }
+
+  // Function to update shipping fees based on selected city
+  // function updateShippingFeesguestcheckout() {
+  //   const selectedCity = citySelect.value;
+  //   const shippingText = document.getElementById("shippingText");
+  //   const shippingFeeValue = document.getElementById("shipping-fees");
+
+  //   if (!selectedCity || qualifiesForFreeShipping) return;
+
+  //   let shippingFee = maincities.includes(selectedCity)
+  //     ? minshipping
+  //     : maxshipping;
+
+  //   shippingText.textContent = `Shipping fees: ${shippingFee} EGP`;
+  //   shippingFeeValue.dataset.fee = shippingFee;
+  //   shippingFeeValue.textContent = `${shippingFee} EGP`;
+  // }
+  function updateShippingFeesguestcheckout() {
+    const selectedCity = document.getElementById("Gityandgovernment").value;
+    const shippingText = document.getElementById("shippingText");
+    const shippingFeeValue = document.getElementById("shipping-fees-guest");
+    const cartTotal =
+      parseFloat(
+        document.getElementById("cart-total").textContent.replace(" EGP", "")
+      ) || 0;
+
+    // Check for free shipping qualification
+    const qualifiesForFreeShipping = cartTotal >= parseFloat(freeshipping);
+
+    if (qualifiesForFreeShipping) {
+      // Free shipping case
+      shippingText.innerHTML = `
+            <span class="BuyItNowForm-shipping-message">
+                You've got free shipping!
+            </span> (Order amount exceeds ${freeshipping} EGP)
+        `;
+      shippingFeeValue.dataset.fee = "0";
+      shippingFeeValue.textContent = "free";
+      return;
+    }
+
+    if (!selectedCity) {
+      // No city selected case
+      shippingText.textContent =
+        "Please select your government to calculate shipping fees";
+      shippingFeeValue.dataset.fee = "0";
+      shippingFeeValue.textContent = "";
+      return;
+    }
+
+    // Regular shipping case
+    const shippingFee = maincities.includes(selectedCity)
+      ? minshipping
+      : maxshipping;
+
+    shippingText.textContent = `Shipping fees: ${shippingFee} EGP`;
+    shippingFeeValue.dataset.fee = shippingFee.toString();
+    shippingFeeValue.textContent = `${shippingFee} EGP`;
+  }
+
+  // Initial update if city is already selected
+  if (citySelect && citySelect.value && !qualifiesForFreeShipping) {
+    updateShippingFeesguestcheckout();
   }
 }

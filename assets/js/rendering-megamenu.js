@@ -265,7 +265,7 @@ renderMegaMenu();
 const brandsData = [
   {
     name: "Nike",
-    logo: "https://cdn.worldvectorlogo.com/logos/nike-11.svg",
+    logo: "https://www.svgrepo.com/show/303173/nike-3-logo.svg",
   },
   {
     name: "Adidas",
@@ -290,26 +290,6 @@ const brandsData = [
   {
     name: "Golden Goose",
     logo: "https://cdn.freelogovectors.net/wp-content/uploads/2023/03/golden-goose-logo-freelogovectors.net_.png",
-  },
-  {
-    name: "McQueen",
-    logo: "https://cdn.worldvectorlogo.com/logos/alexander-mcqueen.svg",
-  },
-  {
-    name: "Birkenstock",
-    logo: "https://cdn.worldvectorlogo.com/logos/birkenstock-30839.svg",
-  },
-  {
-    name: "Timberland",
-    logo: "https://cdn.worldvectorlogo.com/logos/timberland-1.svg",
-  },
-  {
-    name: "Balenciaga",
-    logo: "https://cdn.worldvectorlogo.com/logos/balenciaga2017logo.svg",
-  },
-  {
-    name: " Dr Martens",
-    logo: "https://cdn.worldvectorlogo.com/logos/dr-martens.svg",
   },
   {
     name: "New Balance",

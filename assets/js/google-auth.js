@@ -85,8 +85,6 @@ document.getElementById("signout-btn").addEventListener("click", (event) => {
     title: "Are you sure?",
     text: "You will be signed out",
     icon: "question",
-    toast: true,
-    position: "top-end",
     showCancelButton: true,
     showConfirmButton: true,
     confirmButtonText: "Yes",
@@ -110,8 +108,6 @@ document.getElementById("signout-btn").addEventListener("click", (event) => {
             title: "Logged out!",
             text: "You have been signed out successfully",
             icon: "success",
-            toast: true,
-            position: "top-end",
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true,
@@ -340,7 +336,11 @@ async function updateUI(user) {
               let hideProgressContainer = false;
 
               // Check if we need to hide the progress container
-              if (shippingStatus === "returned" || progress === "pending") {
+              if (
+                shippingStatus === "returned" ||
+                progress === "pending" ||
+                progress === "deleted"
+              ) {
                 hideProgressContainer = true;
               } else if (!shippingStatus) {
                 // If shippingStatus is undefined, mark only "Order Preparing" as active
@@ -430,6 +430,41 @@ async function updateUI(user) {
     <div class="order-actions">
       <button onclick="printinvoice('${key}', '${uid}', '${token}')" class="btn-view">Print Invoice</button>
     </div>
+   
+    <div class="order-notes-orderhistory " style="${
+      orderData.deletedAt ? "" : "display: none;"
+    }">
+  ${
+    orderData.deletedAt
+      ? `
+    
+      <div class="note-row-orderhistory">
+        <span class="note-label">Deleted At:</span>
+        <span class="note-value">${new Date(
+          orderData.deletedAt
+        ).toLocaleString()}</span>
+      </div>
+      <div class="note-row-orderhistory">
+        <span class="note-label">Reason:</span>
+        <span class="note-value">${orderData.deletionReason}</span>
+      </div>
+      ${
+        orderData.deletionNotes
+          ? `
+        <div class="note-row-orderhistory">
+          <i class="bi bi-chat-left-text"></i>
+          <span class="note-label">Notes:</span>
+          <span class="note-value">${orderData.deletionNotes}</span>
+        </div>
+      `
+          : ""
+      }
+    </div>
+  `
+      : ""
+  }
+
+   
   </div>
   `;
 

@@ -1,6 +1,5 @@
 function setupHoverEffect(productItem) {
   if (!flippedimages) return;
-
   const images = productItem.querySelectorAll(".image-contain");
   const cardBanner = productItem.querySelector(".card-banner");
 

@@ -21,23 +21,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./assets/jq/jquery.js"></script>
     <script src="./assets/js/image-error.js"></script>
-    <!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '719121040546503');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
 </head>
 
 <div class="preloader" id="preloader">
@@ -145,25 +128,7 @@ src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
     </div>
 </header>
 <article>
-    <div class="sale-animation-bar ">
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
-        <span class="sale-animation-txt">SALE</span>
 
-
-        <!-- Duplicate for continuous effect -->
-    </div>
 
     <section class="section product">
         <div class="container pt-10">
@@ -172,6 +137,7 @@ src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
                     <h5 class="grey pointer" onclick="changeFrameSrc('index.html')">Home </h5>
                     /
                     <h5>Sale</h5>
+                    <p class="itemscounter" id="itemscounter"></p>
                 </div>
 
                 <div class="filter-container flex center">
@@ -324,7 +290,7 @@ src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
                         </a>
                     </li>
                 </ul>
-                <div class="footer-list hidden">
+                <div class="footer-list">
 
                     <p class="footer-list-title animate-on-scroll">Newsletter</p>
 
@@ -339,19 +305,6 @@ src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
                         <button type="submit" class="btn2 btn-primary">Subscribe</button>
                     </form>
 
-                </div>
-                <div class="footer-list">
-                    <p class="footer-list-title animate-on-scroll">Payment Options</p>
-                    <div class="payment-options animate-on-scroll">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/InstaPay_Logo.png" alt="InstaPay"
-                            class="payment-icon pointer">
-                        <img src="https://www.svgrepo.com/show/328127/visa.svg" alt="Visa" class="payment-icon pointer">
-                        <img src="https://image.pngaaa.com/548/5179548-middle.png" alt="Mastercard"
-                            class="payment-icon pointer">
-                    </div>
-                    <p class="newsletter-text animate-on-scroll pointer" onclick="openPolicyModal()">
-                        Shipping & Return Policy
-                    </p>
                 </div>
 
                 <ul class="footer-list animate-on-scroll">
@@ -400,7 +353,9 @@ src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
 <script src="./assets/js/update-cart-amont.js"></script>
 <script src="./assets/js/report.js"></script>
 <script src="./assets/js/all.js"></script>
+<script src="./assets/js/buynow.js"></script>
 <script src="./assets/js/rendering-megamenu.js"></script>
 <script src="./assets/js/rendering-search.js"></script>
 <script src="./assets/js/rendering-sidebar.js"></script>
 <script src="./assets/js/addfavouriteproduct.js"></script>
+<script src="./assets/js/check-store-status.js"></script>

@@ -1,6 +1,6 @@
 const sidebarContent = `<div class="filter-header">
                             <h3>Filters</h3>
-                            <button type="button" id="closeBtn" class="close-btn">
+                            <button type="button" id="closeBtn" class="filtering-close-btn">
                                 <i class="bi bi-x-lg"></i>
                             </button>
                         </div>

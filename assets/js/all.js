@@ -92,9 +92,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-//
-// scroll to checout btn//
-
 //handle page title
 document.getElementById("store-title").innerHTML = storename;
 
@@ -132,14 +129,6 @@ function addAnimation() {
     });
   });
 }
-
-//
-
-// function calculateSalePrice(originalPrice, saleAmount) {
-//   const discountedPrice = originalPrice - originalPrice * (saleAmount / 100);
-//   return Math.round(discountedPrice); // Rounds to the nearest integer (e.g., 3197.6 → 3198)
-// }
-
 function calculateSalePrice(originalPrice, saleAmount) {
   const discountedPrice = originalPrice - originalPrice * (saleAmount / 100);
 
@@ -161,10 +150,45 @@ function calculateSalePrice(originalPrice, saleAmount) {
   return Math.ceil(discountedPrice / 1000) * 1000;
 }
 
+//cities
+
+const cityOptions = [
+  "Alexandria",
+  "Aswan",
+  "Asyut",
+  "Beheira",
+  "Beni Suef",
+  "Cairo",
+  "Dakahlia",
+  "Damietta",
+  "Faiyum",
+  "Gharbia",
+  "Giza",
+  "Ismailia",
+  "Kafr El Sheikh",
+  "Luxor",
+  "Matruh",
+  "Minya",
+  "Monufia",
+  "New Valley",
+  "North Sinai",
+  "Port Said",
+  "Qalyubia",
+  "Qena",
+  "Red Sea",
+  "Sharqia",
+  "Sohag",
+  "South Sinai",
+  "Suez",
+];
 //using them in cart checkout page
 function removeaddressarea() {
   const addressarea = document.getElementById("address-sec");
   addressarea.remove();
+}
+function hideshippingarea() {
+  const shippingarea = document.getElementById("shipping-fees-total-area");
+  shippingarea.classList.add("hidden");
 }
 function prepareguestbtn() {
   const removedbtn = document.getElementById("checkoutByAccount");
@@ -175,7 +199,7 @@ function prepareguestbtn() {
 
   if (addedbtn) {
     addedbtn.innerHTML = `
-      <button id="guestSubmitorderbtn" class="Add-to-Cart">
+      <button id="guestSubmitorderbtn" class="checkoutbtn">
         Order Now As Guest
         <i class="bi bi-check2-all"></i>
       </button>
@@ -187,7 +211,6 @@ function prepareguestbtn() {
       .addEventListener("click", guestSubmitorder);
   }
 }
-//
 // Configuration object for store hints
 const storeHintsConfig = {
   currentPromos: [], // Will be populated from Firebase
@@ -319,7 +342,81 @@ window.updateStoreHints = async function (newConfig) {
   await renderStoreHints();
 };
 
-//shipping and reurn policy
+//rendering pixels
+function renderPixels() {
+  const url = `https://matager-f1f00-default-rtdb.firebaseio.com/Stores/${uid}/Pixels.json`;
+  if (!uid) {
+    console.error("UID is required to fetch pixels");
+    return;
+  }
+  fetch(url)
+    .then((response) => {
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
+      return response.json();
+    })
+    .then((data) => {
+      if (!data) {
+        return;
+      }
+
+      const head = document.head;
+
+      Object.values(data).forEach((pixel) => {
+        // Add comment with pixel name
+        head.appendChild(document.createComment(` ${pixel.pixelName} `));
+
+        // Create a temporary div to parse the HTML
+        const temp = document.createElement("div");
+        temp.innerHTML = pixel.pixelCode.trim();
+
+        // Move all child nodes to the head
+        while (temp.firstChild) {
+          head.appendChild(temp.firstChild);
+        }
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching pixels:", error);
+    });
+}
+// Call the function when the page loads
+window.addEventListener("DOMContentLoaded", renderPixels);
+
+//brands scrollbar
+function createBrandItems() {
+  const brandsScroller = document.getElementById("brandsScroller");
+  if (!brandsScroller) return; // Exit if element not found
+
+  // Create first set of brands
+  brandsData.forEach((brand) => {
+    brandsScroller.innerHTML += `
+      <div class="brand-item" onclick="brand('${brand.name.replace(
+        /'/g,
+        "\\'"
+      )}')">
+        <img src="${brand.logo}" alt="${brand.name}" class="brand-logo">
+      </div>
+    `;
+  });
+
+  // Create duplicate set for seamless looping
+  brandsData.forEach((brand) => {
+    brandsScroller.innerHTML += `
+      <div class="brand-item" onclick="brand('${brand.name.replace(
+        /'/g,
+        "\\'"
+      )}')">
+        <img src="${brand.logo}" alt="${brand.name}" class="brand-logo">
+      </div>
+    `;
+  });
+}
+
+window.onload = createBrandItems;
+
+//
+
 function openPolicyModal() {
   // Create preloader overlay if it doesn't exist
   let preloader = document.getElementById("preloader-overlay");
@@ -364,7 +461,7 @@ function openPolicyModal() {
           </div>
         </div>
         
-        <div class="policy-content" style="padding: 20px; max-height: 80vh; overflow-y: auto;">
+        <div class="policy-content" style="padding: 20px;overflow-y: auto;">
           <h2 style="margin-bottom: 20px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">Return Policy</h2>
           <ul class="policy-list">
             <li class="policy-item"><span class="policy-icon">•</span> You can only return the Order/Item within 24 hours after receiving your order.</li>
@@ -374,7 +471,7 @@ function openPolicyModal() {
           </ul>
           
           <div class="arabic-policy" style="margin-top: 30px; direction: rtl; text-align: right;">
-            <h3 style="margin-bottom: 15px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">سياسة الإرجاع</h3>
+            <h3 style="text-align: center;margin-bottom: 15px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">سياسة الإرجاع</h3>
             <ul class="policy-list" style="padding-right: 20px;">
               <li class="policy-item"><span class="policy-icon">•</span> يمكنك تقديم على إرجاع الطلب / المنتج بعد استلامه خلال 24 ساعة من الاستلام</li>
               <li class="policy-item"><span class="policy-icon">•</span> رسوم الشحن غير قابلة للاسترداد</li>
@@ -383,36 +480,36 @@ function openPolicyModal() {
           </div>
           
           <div class="faq-section" style="margin-top: 40px;">
-            <h3 style="margin-bottom: 20px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">Frequently Asked Questions</h3>
-            
-            <div class="faq-item" style="margin-bottom: 20px;">
-              <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► How to place an Order?</h4>
-              <div class="faq-answer" style="display: none; padding-left: 20px; color: #666;">
-                <p>To place an order, simply browse our products, select the items you want, and proceed to checkout.</p>
-              </div>
-            </div>
-            
-            <div class="faq-item" style="margin-bottom: 20px;">
-              <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► What are the Installment options?</h4>
-              <div class="faq-answer" style="display: none; padding-left: 20px; color: #666;">
-                <p>We offer various installment plans through select payment providers. Options will be shown at checkout.</p>
-              </div>
-            </div>
-            
-            <div class="faq-item" style="margin-bottom: 20px;">
-              <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► Can I edit or cancel my order?</h4>
-              <div class="faq-answer" style="display: none; padding-left: 20px; color: #666;">
-                <p>You can edit or cancel your order within 1 hour of placement by contacting customer service.</p>
-              </div>
-            </div>
-            
-            <div class="faq-item" style="margin-bottom: 20px;">
-              <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► What is the estimated delivery?</h4>
-              <div class="faq-answer" style="display: none; padding-left: 20px; color: #666;">
-                <p>Delivery typically takes 3-5 business days within major cities, and 5-7 days for other areas.</p>
-              </div>
-            </div>
-          </div>
+  <h3 style="margin-bottom: 20px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">Frequently Asked Questions</h3>
+  
+  <div class="faq-item" style="margin-bottom: 20px;">
+    <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► How to place an Order?</h4>
+    <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding-left: 20px; color: #666;">
+      <p style="margin-top: 10px;">To place an order, simply browse our products, select the items you want, and proceed to checkout.</p>
+    </div>
+  </div>
+  
+  <div class="faq-item" style="margin-bottom: 20px;">
+    <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► What are the Installment options?</h4>
+    <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding-left: 20px; color: #666;">
+      <p style="margin-top: 10px;">We offer various installment plans through select payment providers. Options will be shown at checkout.</p>
+    </div>
+  </div>
+  
+  <div class="faq-item" style="margin-bottom: 20px;">
+    <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► Can I edit or cancel my order?</h4>
+    <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding-left: 20px; color: #666;">
+      <p style="margin-top: 10px;">You can edit or cancel your order within 1 hour of placement by contacting customer service.</p>
+    </div>
+  </div>
+  
+  <div class="faq-item" style="margin-bottom: 20px;">
+    <h4 style="color: #555; margin-bottom: 8px; cursor: pointer;" onclick="toggleFAQ(this)">► What is the estimated delivery?</h4>
+    <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; padding-left: 20px; color: #666;">
+      <p style="margin-top: 10px;">Delivery typically takes 3-5 business days within major cities, and 5-7 days for other areas.</p>
+    </div>
+  </div>
+</div>
         </div>
       `;
 
@@ -434,12 +531,26 @@ function openPolicyModal() {
 // FAQ toggle function
 function toggleFAQ(element) {
   const answer = element.nextElementSibling;
+
   if (answer.style.display === "none" || !answer.style.display) {
+    // First make it visible (but still at 0 height)
     answer.style.display = "block";
-    element.innerHTML = element.innerHTML.replace("►", "▼");
+    answer.style.maxHeight = "0";
+
+    // Trigger the transition after a small delay
+    setTimeout(() => {
+      answer.style.maxHeight = answer.scrollHeight + "px";
+      element.innerHTML = element.innerHTML.replace("►", "▼");
+    }, 10);
   } else {
-    answer.style.display = "none";
+    // Start the collapse transition
+    answer.style.maxHeight = "0";
     element.innerHTML = element.innerHTML.replace("▼", "►");
+
+    // After transition completes, hide it completely
+    setTimeout(() => {
+      answer.style.display = "none";
+    }, 300); // Match this with your transition duration
   }
 }
 // Reuse the same closeModal function
@@ -460,67 +571,642 @@ function closeModal() {
   }, 300);
 }
 
+//handling th card badge and bestseller badge
+function setupBadgeAnimations() {
+  const badges = document.querySelectorAll(".card-badge");
+  badges.forEach((badge) => {
+    const saleBadge = badge.querySelector("#saleAmountbadge");
+    const bestsellerBadge = badge.querySelector("#best-seller");
+
+    if (saleBadge && bestsellerBadge) {
+      // Initial setup
+      badge.classList.remove("show-bestseller");
+      void badge.offsetHeight; // Trigger reflow
+      saleBadge.style.opacity = "1";
+      bestsellerBadge.style.opacity = "1";
+
+      // Animation loop function
+      const animateBadges = () => {
+        // Show sale badge first
+        badge.classList.remove("show-bestseller");
+
+        // After 2 seconds, show bestseller
+        setTimeout(() => {
+          badge.classList.add("show-bestseller");
+
+          // After another 2 seconds, restart animation
+          setTimeout(() => {
+            animateBadges(); // Recursive call for infinite loop
+          }, 2000);
+        }, 2000);
+      };
+
+      // Start the animation loop
+      animateBadges();
+    }
+  });
+}
+//funcion for setting up the price nad saled price animition
+function setupPriceAnimations() {
+  const priceContainers = document.querySelectorAll(
+    ".price-animation-container"
+  );
+
+  priceContainers.forEach((container) => {
+    const originalPrice = container.querySelector(".pre-sale-animation");
+    const salePrice = container.querySelector(".card-price-animation");
+    let animationTimeout;
+
+    // Cleanup function to stop animations
+    const cleanup = () => {
+      if (animationTimeout) {
+        clearTimeout(animationTimeout);
+        animationTimeout = null;
+      }
+      container.classList.remove("show-sale-price");
+    };
+
+    // Case 1: Has sale price (both prices exist) - animate
+    if (originalPrice && salePrice) {
+      // Initial setup
+      container.classList.add("has-sale-price");
+      container.classList.remove("show-sale-price");
+
+      // Force reflow to ensure transitions work
+      void container.offsetHeight;
+
+      // Animation function
+      const animatePrices = () => {
+        // Show original price
+        container.classList.remove("show-sale-price");
+
+        animationTimeout = setTimeout(() => {
+          // Show sale price after delay
+          container.classList.add("show-sale-price");
+
+          animationTimeout = setTimeout(() => {
+            animatePrices(); // Loop
+          }, 2000);
+        }, 2000);
+      };
+
+      // Start animation
+      animatePrices();
+
+      // Clean up when container is removed from DOM
+      const observer = new MutationObserver(() => {
+        if (!document.contains(container)) {
+          cleanup();
+          observer.disconnect();
+        }
+      });
+      observer.observe(document, { childList: true, subtree: true });
+    }
+    // Case 2: No sale price - just show regular price statically
+    else if (salePrice) {
+      container.classList.add("show-sale-price"); // Always show the single price
+      salePrice.style.opacity = "1"; // Ensure it's visible
+    }
+  });
+}
+function setupPricemodalAnimations() {
+  const priceContainers = document.querySelectorAll(
+    ".price-animation-modal-container"
+  );
+
+  priceContainers.forEach((container) => {
+    const originalPrice = container.querySelector(".pre-sale-animation");
+    const salePrice = container.querySelector(".card-price-animation");
+    let animationTimeout;
+
+    // Cleanup function to stop animations
+    const cleanup = () => {
+      if (animationTimeout) {
+        clearTimeout(animationTimeout);
+        animationTimeout = null;
+      }
+      container.classList.remove("show-sale-price");
+    };
+
+    // Case 1: Has sale price (both prices exist) - animate
+    if (originalPrice && salePrice) {
+      // Initial setup
+      container.classList.add("has-sale-price");
+      container.classList.remove("show-sale-price");
+
+      // Force reflow to ensure transitions work
+      void container.offsetHeight;
+
+      // Animation function
+      const animatePrices = () => {
+        // Show original price
+        container.classList.remove("show-sale-price");
+
+        animationTimeout = setTimeout(() => {
+          // Show sale price after delay
+          container.classList.add("show-sale-price");
+
+          animationTimeout = setTimeout(() => {
+            animatePrices(); // Loop
+          }, 2000);
+        }, 2000);
+      };
+
+      // Start animation
+      animatePrices();
+
+      // Clean up when container is removed from DOM
+      const observer = new MutationObserver(() => {
+        if (!document.contains(container)) {
+          cleanup();
+          observer.disconnect();
+        }
+      });
+      observer.observe(document, { childList: true, subtree: true });
+    }
+    // Case 2: No sale price - just show regular price statically
+    else if (salePrice) {
+      container.classList.add("show-sale-price"); // Always show the single price
+      salePrice.style.opacity = "1"; // Ensure it's visible
+    }
+  });
+}
+
 //
-let isTouching = false;
-let startX = 0;
-let scrollLeft = 0;
-const brandsContainer = document.querySelector(".brands-container");
-const brandsScroller = document.getElementById("brandsScroller");
-brandsContainer.addEventListener("touchstart", (e) => {
-  isTouching = true;
-  ("");
-  startX = e.touches[0].pageX - brandsContainer.offsetLeft;
-  scrollLeft = brandsContainer.scrollLeft;
-  brandsContainer.classList.add("scrolling");
-});
-("");
+//check the item out of stock or not
+async function checkStockStatus(qty) {
+  const stockMessage = document.getElementById("stockMessage");
+  const stockContainer = document.getElementById("stockContainer");
 
-brandsContainer.addEventListener("touchmove", (e) => {
-  if (!isTouching) return;
-  ("");
-  e.preventDefault();
-  const x = e.touches[0].pageX - brandsContainer.offsetLeft;
-  const walk = (x - startX) * 2; // Scroll speed multiplier
-  brandsContainer.scrollLeft = scrollLeft - walk;
-});
+  if (qty === 0) {
+    stockMessage.innerText = "Out of stock";
+    stockContainer.classList.remove("hidden");
+    showOutOfStockBadge();
+    hidePurchaseButtons();
+    disableProductOptions();
+  } else if (qty <= 5) {
+    stockMessage.innerText = `Only ${qty} left in stock`;
+    stockContainer.classList.remove("hidden");
+    removeOutOfStockBadge();
+    showPurchaseButtons();
+    enableProductOptions();
+  } else {
+    console.log("Adequate stock", qty);
+    stockMessage.innerText = "";
+    stockContainer.classList.add("hidden");
+    removeOutOfStockBadge();
+    showPurchaseButtons();
+    enableProductOptions();
+  }
+}
+function showOutOfStockBadge() {
+  const mainImageContainer = document.getElementById("outofstockmessagebanner");
+  mainImageContainer.classList.remove("hidden");
+}
 
-brandsContainer.addEventListener("touchend", () => {
-  isTouching = false;
-  ("");
+function removeOutOfStockBadge() {
+  const mainImageContainer = document.getElementById("outofstockmessagebanner");
+  mainImageContainer.classList.add("hidden");
+}
+
+function hidePurchaseButtons() {
+  document.getElementById("buybuttonsarea").style.display = "none";
+  // document.getElementById("BuyNowButton").style.display = "none";
+}
+
+function showPurchaseButtons() {
+  document.getElementById("buybuttonsarea").style.display = "";
+  // document.getElementById("BuyNowButton").style.display = "";
+}
+
+function disableProductOptions() {
+  document.querySelectorAll(".size-radio, .color-option").forEach((option) => {
+    option.classList.add("out-of-stock-option");
+  });
+}
+
+function enableProductOptions() {
+  document.querySelectorAll(".size-radio, .color-option").forEach((option) => {
+    option.classList.remove("out-of-stock-option");
+  });
+}
+
+//check the item out of stock or not
+function getColorOptionsAndStockInfo(product) {
+  const allColors = new Set();
+  const colorValues = {};
+
+  // First pass to collect all colors and their values
+  if (product.sizes) {
+    Object.values(product.sizes).forEach((sizeDetails) => {
+      if (sizeDetails) {
+        Object.keys(sizeDetails).forEach((color) => {
+          allColors.add(color);
+          colorValues[color] = sizeDetails[color]["color-value"];
+        });
+      }
+    });
+  }
+
+  // Calculate total available quantity
+  let totalAvailableQty = 0;
+  if (product.sizes) {
+    Object.values(product.sizes).forEach((sizeDetails) => {
+      if (sizeDetails) {
+        Object.keys(sizeDetails).forEach((color) => {
+          const qty = sizeDetails[color].qty || 0;
+          totalAvailableQty += qty;
+        });
+      }
+    });
+  }
+
+  // Generate color options HTML
+  let colorOptionsHTML = "";
+  const colorsArray = Array.from(allColors);
+
+  colorsArray.forEach((color) => {
+    const colorValue = colorValues[color] || "#000000";
+    let maxQty = 0;
+
+    // Calculate max quantity for this color across all sizes
+    if (product.sizes) {
+      Object.values(product.sizes).forEach((sizeDetails) => {
+        if (sizeDetails && sizeDetails[color] && sizeDetails[color].qty) {
+          if (sizeDetails[color].qty > maxQty) {
+            maxQty = sizeDetails[color].qty;
+          }
+        }
+      });
+    }
+
+    colorOptionsHTML += `
+      <div class="color-option2 tooltip" 
+           style="background-color: ${colorValue};" 
+           data-color-name="${color}"
+           item-qty="${maxQty}">
+      </div>
+    `;
+  });
+
+  // Optional JavaScript to generate tooltips from data attributes
+  document.querySelectorAll(".color-option2.tooltip").forEach((option) => {
+    const colorName = option.getAttribute("data-color-name");
+    const qty = option.getAttribute("item-qty");
+    const tooltip = document.createElement("span");
+    tooltip.className = "tooltiptext";
+    tooltip.textContent = `${
+      colorName.charAt(0).toUpperCase() + colorName.slice(1)
+    } (Available: ${qty})`;
+    option.appendChild(tooltip);
+  });
+
+  const colorOptionsContainer =
+    allColors.size > 0
+      ? `<div class="color-options m-5 mb-7 center">${colorOptionsHTML}</div>`
+      : `<p class="no-color-options mb-7">No color options available</p>`;
+
+  // Generate out of stock badge if needed
+  const outOfStockBadge =
+    totalAvailableQty === 0
+      ? '<div class="out-of-stock-badge">Out of Stock</div>'
+      : "";
+
+  return {
+    colorOptionsContainer,
+    outOfStockBadge,
+    totalAvailableQty,
+  };
+}
+
+// Function to animate buttons with staggered delays
+// Function to animate buttons with staggered delays
+
+//animation on product details page
+function animateProductPage() {
+  const animationSequence = [
+    { selector: "#BrandName, #productTitle", delay: 0 },
+    { selector: "#hints-container", delay: 200 },
+    { selector: ".prices-area", delay: 400 },
+    { selector: ".size", delay: 600 },
+    { selector: ".color-selector", delay: 800 },
+    { selector: ".button-animate", delay: 1000 },
+  ];
+
+  animationSequence.forEach((item) => {
+    setTimeout(() => {
+      const elements = document.querySelectorAll(item.selector);
+      elements.forEach((el) => {
+        if (item.selector === ".button-animate") {
+          // Special handling for buttons (staggered animation)
+          animateButtons();
+        } else {
+          // For other elements
+          el.style.opacity = "1";
+          el.style.transform = "translateY(0)";
+        }
+      });
+    }, item.delay);
+  });
+}
+
+// Modified button animation (staggered within button group)
+function animateButtons() {
+  const buttons = document.querySelectorAll(".button-animate");
+  buttons.forEach((button, index) => {
+    setTimeout(() => {
+      button.classList.add("show");
+    }, index * 100);
+  });
+}
+
+// Initialize animations when preloader is hidden
+function initAnimations() {
+  const preloader = document.getElementById("preloader");
+
+  if (preloader.classList.contains("hidden")) {
+    animateProductPage();
+    return;
+  }
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (
+        mutation.attributeName === "class" &&
+        preloader.classList.contains("hidden")
+      ) {
+        observer.disconnect();
+        animateProductPage();
+      }
+    });
+  });
+
+  observer.observe(preloader, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+}
+
+// animate on modal open page
+function animateModalContent() {
+  const animationSequence = [
+    { selector: ".modal-header", delay: 0, transform: "translateY(-20px)" },
+    { selector: "#BrandName", delay: 100, transform: "translateY(-20px)" },
+    { selector: "#productTitle", delay: 200, transform: "translateY(-20px)" },
+    {
+      selector: ".price-animation-modal-container",
+      delay: 300,
+      transform: "translateY(-20px)",
+    },
+    { selector: "#productImage", delay: 400, transform: "scale(0.95)" },
+    {
+      selector: ".size-buttons-area",
+      delay: 500,
+      transform: "translateY(-20px)",
+    },
+    {
+      selector: ".colors-circels-area",
+      delay: 600,
+      transform: "translateY(-20px)",
+    },
+    { selector: "#BuyNowButton", delay: 700, transform: "translateY(20px)" },
+    { selector: "#addToCartButton", delay: 800, transform: "translateY(20px)" },
+  ];
+
+  animationSequence.forEach((item) => {
+    setTimeout(() => {
+      const elements = document.querySelectorAll(item.selector);
+      elements.forEach((el) => {
+        el.style.opacity = "1";
+        el.style.transform = "none";
+        el.style.transition = "all 0.5s ease-out";
+
+        // Special case for image scaling animation
+        if (item.selector === "#productImage") {
+          el.style.transform = "scale(1)";
+          el.style.transition =
+            "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+        }
+      });
+    }, item.delay);
+  });
+}
+
+// Initialize modal animations
+// function animateModalContent() {
+//   // First make sure all elements are hidden initially
+//   const elementsToAnimate = [
+//     ".modal-header",
+//     "#BrandName",
+//     "#productTitle",
+//     ".price-animation-modal-container",
+//     "#productImage",
+//     ".size-buttons-area",
+//     ".colors-circels-area",
+//     "#BuyNowButton",
+//     "#addToCartButton",
+//   ];
+
+//   // Set initial state (hidden)
+//   elementsToAnimate.forEach((selector) => {
+//     document.querySelectorAll(selector).forEach((el) => {
+//       el.style.opacity = "0";
+//       el.style.transition = "all 0.5s ease-out";
+//     });
+//   });
+
+//   // Animation sequence
+//   const animationSequence = [
+//     { selector: ".modal-header", delay: 0, transform: "translateY(-20px)" },
+//     { selector: "#BrandName", delay: 100, transform: "translateY(-20px)" },
+//     { selector: "#productTitle", delay: 200, transform: "translateY(-20px)" },
+//     {
+//       selector: ".price-animation-modal-container",
+//       delay: 300,
+//       transform: "translateY(-20px)",
+//     },
+//     { selector: "#productImage", delay: 400, transform: "scale(0.95)" },
+//     {
+//       selector: ".size-buttons-area",
+//       delay: 500,
+//       transform: "translateY(-20px)",
+//     },
+//     {
+//       selector: ".colors-circels-area",
+//       delay: 600,
+//       transform: "translateY(-20px)",
+//     },
+//     { selector: "#BuyNowButton", delay: 700, transform: "translateY(20px)" },
+//     { selector: "#addToCartButton", delay: 800, transform: "translateY(20px)" },
+//   ];
+
+//   // Execute animations
+//   animationSequence.forEach((item) => {
+//     setTimeout(() => {
+//       document.querySelectorAll(item.selector).forEach((el) => {
+//         el.style.opacity = "1";
+//         el.style.transform = "none";
+
+//         if (item.selector === "#productImage") {
+//           el.style.transform = "scale(1)";
+//           el.style.transition =
+//             "transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+//         }
+//       });
+//     }, item.delay);
+//   });
+// }
+
+// function initModalAnimations() {
+//   const preloader = document.getElementById("preloader-overlay");
+
+//   // First wait for preloader to hide
+//   if (preloader && preloader.classList.contains("hidden")) {
+//     // Then wait for the modal content to be fully rendered
+//     waitForModalContent().then(animateModalContent);
+//     return;
+//   }
+
+//   if (preloader) {
+//     const observer = new MutationObserver((mutations) => {
+//       mutations.forEach((mutation) => {
+//         if (
+//           mutation.attributeName === "class" &&
+//           preloader.classList.contains("hidden")
+//         ) {
+//           observer.disconnect();
+//           // Then wait for the modal content to be fully rendered
+//           waitForModalContent().then(animateModalContent);
+//         }
+//       });
+//     });
+
+//     observer.observe(preloader, {
+//       attributes: true,
+//       attributeFilter: ["class"],
+//     });
+//   } else {
+//     // If no preloader, just wait for modal content
+//     waitForModalContent().then(animateModalContent);
+//   }
+// }
+
+// // Helper function to wait for modal content to be fully rendered
+// function waitForModalContent() {
+//   return new Promise((resolve) => {
+//     const checkContent = () => {
+//       // Check for specific elements that should exist after render
+//       if (
+//         document.querySelector("#productImage") &&
+//         document.querySelector(".size-buttons-area") &&
+//         document.querySelector("#BuyNowButton")
+//       ) {
+//         resolve();
+//       } else {
+//         setTimeout(checkContent, 50);
+//       }
+//     };
+//     checkContent();
+//   });
+// }
+
+function animateModalContent() {
+  // First make sure all elements are hidden initially
+  const elementsToAnimate = [
+    ".modal-header",
+    "#BrandName",
+    "#productTitlearea",
+    "#pricecontainer",
+    "#productImage",
+    ".size-buttons-area",
+    ".colors-circels-area",
+    "#BuyNowButton",
+    "#addToCartButton",
+  ];
+
+  // Set initial state (hidden and positioned below)
+  elementsToAnimate.forEach((selector) => {
+    document.querySelectorAll(selector).forEach((el) => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(30px)";
+      el.style.transition = "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+    });
+  });
+
+  // Animation sequence - each element appears 100ms after the previous one
+  let currentDelay = 100; // Start with 100ms delay for the first element
+
+  elementsToAnimate.forEach((selector) => {
+    setTimeout(() => {
+      document.querySelectorAll(selector).forEach((el) => {
+        el.style.opacity = "1";
+        el.style.transform = "translateY(0)";
+      });
+    }, currentDelay);
+
+    currentDelay += 100; // Increment delay for next element
+  });
+
+  // Special animation for product image (slight scale effect)
   setTimeout(() => {
-    brandsContainer.classList.remove("scrolling");
-  }, 1000); // Resume animation after"1 second "f inactivity
-});
+    const productImage = document.querySelector("#productImage");
+    if (productImage) {
+      productImage.style.transform = "translateY(0) scale(1)";
+      productImage.style.transition =
+        "transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease-out";
+    }
+  }, 400); // Image gets special timing
+}
 
-// Mouse events for desktop testing
-brandsContainer.addEventListener("mousedown", (e) => {
-  isTouching = true;
-  ("");
-  startX = e.pageX - brandsContainer.offsetLeft;
-  scrollLeft = brandsContainer.scrollLeft;
-  brandsContainer.classList.add("scrolling");
-});
-("");
+function initModalAnimations() {
+  const preloader = document.getElementById("preloader-overlay");
 
-brandsContainer.addEventListener("mousemove", (e) => {
-  if (!isTouching) return;
-  ("");
-  e.preventDefault();
-  const x = e.pageX - brandsContainer.offsetLeft;
-  const walk = (x - startX) * 2;
-  brandsContainer.scrollLeft = scrollLeft - walk;
-});
+  // First wait for preloader to hide
+  if (preloader && preloader.classList.contains("hidden")) {
+    // Then wait for the modal content to be fully rendered
+    waitForModalContent().then(animateModalContent);
+    return;
+  }
 
-brandsContainer.addEventListener("mouseup", () => {
-  isTouching = false;
-  ("");
-  brandsContainer.classList.remove("scrolling");
-});
-("");
+  if (preloader) {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.attributeName === "class" &&
+          preloader.classList.contains("hidden")
+        ) {
+          observer.disconnect();
+          // Then wait for the modal content to be fully rendered
+          waitForModalContent().then(animateModalContent);
+        }
+      });
+    });
 
-brandsContainer.addEventListener("mouseleave", () => {
-  isTouching = false;
-  ("");
-  brandsContainer.classList.remove("scrolling");
-});
-("");
+    observer.observe(preloader, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+  } else {
+    // If no preloader, just wait for modal content
+    waitForModalContent().then(animateModalContent);
+  }
+}
+
+// Helper function to wait for modal content to be fully rendered
+function waitForModalContent() {
+  return new Promise((resolve) => {
+    const checkContent = () => {
+      // Check for specific elements that should exist after render
+      if (
+        document.querySelector("#productImage") &&
+        document.querySelector(".size-buttons-area") &&
+        document.querySelector("#BuyNowButton")
+      ) {
+        resolve();
+      } else {
+        setTimeout(checkContent, 50);
+      }
+    };
+    checkContent();
+  });
+}

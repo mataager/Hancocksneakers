@@ -21,23 +21,7 @@
     <script src="./assets/jq/jquery.js"></script>
     <script src="./assets/js/image-error.js"></script>
     <script src="./assets/js/animation.js"></script>
-    <!-- Meta Pixel Code -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '719121040546503');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+
 </head>
 
 <div class="preloader" id="preloader">
@@ -153,6 +137,7 @@ src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
                 <div class="flex align-items section-title ">
                     <h5 class="grey pointer" onclick="changeFrameSrc('index.html')">Home/</h5>
                     <h5 id="brand-title"></h5>
+                    <p class="itemscounter" id="itemscounter"></p>
                 </div>
 
                 <div class="filter-container flex center">
@@ -325,13 +310,6 @@ src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
                     </form>
 
                 </div>
-                <div class="footer-list">
-
-                    <p class="footer-list-title animate-on-scroll">Policy</p>
-                    <p class="newsletter-text animate-on-scroll pointer" onclick="openPolicyModal()">
-                        Shipping & Retun Policy
-                    </p>
-                </div>
 
                 <ul class="footer-list animate-on-scroll">
                     <p class="footer-list-title animate-on-scroll">Matager</p>
@@ -378,7 +356,9 @@ src="https://www.facebook.com/tr?id=719121040546503&ev=PageView&noscript=1"
 <script src="./assets/js/update-cart-amont.js"></script>
 <script src="./assets/js/report.js"></script>
 <script src="./assets/js/all.js"></script>
+<script src="./assets/js/buynow.js"></script>
 <script src="./assets/js/rendering-megamenu.js"></script>
 <script src="./assets/js/rendering-search.js"></script>
 <script src="./assets/js/rendering-sidebar.js"></script>
 <script src="./assets/js/addfavouriteproduct.js"></script>
+<script src="./assets/js/check-store-status.js"></script>

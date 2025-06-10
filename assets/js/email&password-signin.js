@@ -1,4 +1,3 @@
-
 //v3
 function emailPasswordSignIn() {
   const body = document.body;
@@ -8,13 +7,14 @@ function emailPasswordSignIn() {
   // Set the modal content with both forms (initially hidden)
   modalContent.innerHTML = `
     <div class="guestmodalarea">
-    <div class="flex center flex-end guest-modal-close-btn-7a3b" onclick="closeModal()">
-    <button type="button" class="Add-to-Cart" id="perv4Button">
-        <i class="bi bi-x-lg"></i>
+    <div class="flex center flex-end guest-modal-close-btn-7a3b" onclick="closesigningModal()">
+    <button type="button" class="modalbtnL" id="perv4Button">
+        <i class="bi bi-x"></i>
     </button>
     </div>
       <!-- Sign In Form -->
       <div id="signin-form" class="form-container active">
+      <div class="width-available flex center mb-20"><img class="animate-on-scroll-auto show fle" width="50px" src="./assets/images/matager-bag.svg"></div>
         <h2>Sign in for better experience</h2>
         <div class="mt-30 mb-30 signinupinbutarea04392">
           <input type="email" id="email" class="swal2-input" placeholder="Enter your email">
@@ -22,12 +22,13 @@ function emailPasswordSignIn() {
           <div id="signin-error" class="error-hint"></div>
           <button id="continueGuest" class="modal-btn signinupbtn04392">Sign in</button>
           <div id="signin-preloader" class="preloader" style="display: none;"> <div class="loader"></div></div>
-          <p style="margin-top: 40px;">Don't have an account? <a href="#" id="signup-link" class="mt-10">Sign up here</a></p>
+          <p style="margin-top: 40px;" class="signup-link-container ">Don't have an account? <a href="#" id="signup-link" class="mt-10 pb-5">Sign up here</a></p>
         </div>
       </div>
 
       <!-- Sign Up Form -->
       <div id="signup-form" class="form-container">
+      <div class="width-available flex center mb-20"><img class="animate-on-scroll-auto show fle" width="50px" src="./assets/images/matager-bag.svg"></div>
         <div class="progress-container">
           <div class="progress-bar">
             <div class="progress-step-sign" id="step1" data-step="1">Basic Info</div>
@@ -71,7 +72,7 @@ function emailPasswordSignIn() {
               <button id="back-to-step1" class="modal-btn back-btn"><i class="bi bi-arrow-left"></i></button>
               <button id="next-to-step3" class="modal-btn signinupbtn04392">Next</button>
             </div>
-            <p class="">Already have an account? <a href="#" id="signin-link" class="mt-10">Sign in here</a></p>
+            <p class="mt-30">Already have an account? <a href="#" id="signin-link" class="mt-10">Sign in here</a></p>
           </div>
         </div>
 
@@ -119,7 +120,7 @@ function emailPasswordSignIn() {
               <button id="signup-btn" class="modal-btn signinupbtn04392">Complete Sign Up</button>
             </div>
             <div id="signup-preloader" class="preloader" style="display: none;"> <div class="loader"></div></div>
-             <p class="">Already have an account? <a href="#" id="signin-link" class="mt-10">Sign in here</a></p>
+             <p class="mt-30">Already have an account? <a href="#" id="signin-link" class="mt-10">Sign in here</a></p>
           </div>
         </div>
         <div id="signup-success" style="display: none; text-align: center;">
@@ -407,7 +408,7 @@ function emailPasswordSignIn() {
     if (/[^A-Za-z0-9]/.test(password)) strength += 1;
 
     // Update UI
-    const colors = ["#ff4d4d", "#ff9999", "#66b3ff", "#4dff4d", "#00cc00"];
+    const colors = ["#000", "#000", "#000", "#000", "#000"];
     const texts = ["Very Weak", "Weak", "Moderate", "Strong", "Very Strong"];
 
     strengthFill.style.width = `${(strength / 4) * 100}%`;
@@ -462,11 +463,6 @@ function emailPasswordSignIn() {
     clearAllErrors();
   }
 
-  function closeModal() {
-    body.classList.remove("modal-open");
-    modal.classList.remove("show");
-  }
-
   function handleSignIn() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -513,12 +509,10 @@ function emailPasswordSignIn() {
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Hide the modal on success
-        closeModal();
+        closesigningModal();
 
         // Show success message
         Swal.fire({
-          toast: true,
-          position: "top-end",
           icon: "success",
           title: `Signed In Successfully\nWelcome, ${userCredential.user.email}`,
           showConfirmButton: false,
@@ -553,191 +547,6 @@ function emailPasswordSignIn() {
           userFriendlyMessage;
       });
   }
-
-  // function handleSignUp() {
-  //   // Validate step 3
-  //   const governorate = document.getElementById("governorate").value;
-  //   const city = document.getElementById("city").value.trim();
-  //   const area = document.getElementById("area").value.trim();
-  //   const houseNumber = document.getElementById("house-number").value.trim();
-  //   const fullAddress = document.getElementById("address").value.trim();
-
-  //   // Clear previous errors
-  //   document.getElementById("step3-error").textContent = "";
-  //   document
-  //     .querySelectorAll(
-  //       "#signup-step3 input, #signup-step3 select, #signup-step3 textarea"
-  //     )
-  //     .forEach((el) => {
-  //       el.classList.remove("input-error");
-  //     });
-
-  //   let isValid = true;
-  //   let errorMessage = "";
-
-  //   if (!governorate) {
-  //     errorMessage = "Governorate is required";
-  //     document.getElementById("governorate").classList.add("input-error");
-  //     isValid = false;
-  //   }
-
-  //   if (!city) {
-  //     errorMessage = errorMessage ? errorMessage + "\n" : "";
-  //     errorMessage += "City is required";
-  //     document.getElementById("city").classList.add("input-error");
-  //     isValid = false;
-  //   }
-
-  //   if (!area) {
-  //     errorMessage = errorMessage ? errorMessage + "\n" : "";
-  //     errorMessage += "Area is required";
-  //     document.getElementById("area").classList.add("input-error");
-  //     isValid = false;
-  //   }
-
-  //   if (!houseNumber) {
-  //     errorMessage = errorMessage ? errorMessage + "\n" : "";
-  //     errorMessage += "House number is required";
-  //     document.getElementById("house-number").classList.add("input-error");
-  //     isValid = false;
-  //   }
-
-  //   if (!fullAddress) {
-  //     errorMessage = errorMessage ? errorMessage + "\n" : "";
-  //     errorMessage += "Full address is required";
-  //     document.getElementById("address").classList.add("input-error");
-  //     isValid = false;
-  //   }
-
-  //   if (!isValid) {
-  //     document.getElementById("step3-error").textContent = errorMessage;
-  //     return;
-  //   }
-
-  //   // Get values from all steps
-  //   const email = document.getElementById("new-email").value;
-  //   const firstName = document.getElementById("first-name-log").value;
-  //   const lastName = document.getElementById("last-name-log").value;
-  //   const password = document.getElementById("new-password").value;
-  //   const phone = document.getElementById("phone").value;
-  //   const phone2 = document.getElementById("phone2").value;
-
-  //   // Show preloader
-  //   showSignUpPreloader(true);
-
-  //   // Disable all form buttons during submission
-  //   const submitButton = document.querySelector(
-  //     "#signup-step3 button[type='submit']"
-  //   );
-  //   submitButton.disabled = true;
-
-  //   auth
-  //     .createUserWithEmailAndPassword(email, password)
-  //     .then((userCredential) => {
-  //       const user = userCredential.user;
-
-  //       return user
-  //         .updateProfile({
-  //           displayName: "Customer",
-  //           photoURL: null,
-  //         })
-  //         .then(() => user.reload())
-  //         .then(() => user.getIdToken())
-  //         .then((idToken) => ({ user, idToken }));
-  //     })
-  //     .then(({ user, idToken }) => {
-  //       const uid = user.uid;
-
-  //       const userData = {
-  //         personalInfo: {
-  //           email: user.email,
-  //           firstName,
-  //           lastName,
-  //           phone: phone,
-  //           phone2: phone2 || null,
-  //           photoURL: null,
-  //         },
-  //         orders: [],
-  //         favorites: [],
-  //       };
-
-  //       const addressData = {
-  //         governorate,
-  //         city,
-  //         area,
-  //         houseNumber,
-  //         fullAddress,
-  //       };
-
-  //       return Promise.all([
-  //         fetch(
-  //           `https://matager-f1f00-default-rtdb.firebaseio.com/users/${uid}/personalInfo.json?auth=${idToken}`,
-  //           {
-  //             method: "POST",
-  //             headers: { "Content-Type": "application/json" },
-  //             body: JSON.stringify(userData.personalInfo),
-  //           }
-  //         ),
-  //         fetch(
-  //           `https://matager-f1f00-default-rtdb.firebaseio.com/users/${uid}/address.json?auth=${idToken}`,
-  //           {
-  //             method: "POST",
-  //             headers: { "Content-Type": "application/json" },
-  //             body: JSON.stringify(addressData),
-  //           }
-  //         ),
-  //       ]).then(() => user);
-  //     })
-  //     .then((user) => {
-  //       // Hide the email signin button
-  //       document.getElementById("email-signin-btn").style.display = "none";
-
-  //       // Show success state
-  //       showSignUpSuccess();
-
-  //       // Wait for the success message to be shown (you might need to adjust timing)
-  //       return new Promise((resolve) => {
-  //         setTimeout(() => {
-  //           showSignUpPreloader(false);
-  //           resolve();
-  //         }, 2000); // 2 seconds delay for user to see the success message
-  //       });
-  //     })
-  //     .then(() => {
-  //       // Close the modal after showing success
-  //       const modal = document.getElementById("signup-modal"); // Adjust ID as needed
-  //       if (modal) {
-  //         // Use whatever method you use to close modals (could be bootstrap modal or custom)
-  //         $(modal).modal("hide"); // If using Bootstrap
-  //         // OR your custom hide function
-  //         // hideModal(modal);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       showSignUpPreloader(false);
-  //       submitButton.disabled = false;
-
-  //       let userFriendlyMessage = "An error occurred. Please try again.";
-
-  //       if (error.code === "auth/email-already-in-use") {
-  //         userFriendlyMessage =
-  //           "This email is already in use. Please use a different email.";
-  //         showSignUpError(userFriendlyMessage);
-  //         goToStep(1);
-  //       } else if (error.code === "auth/weak-password") {
-  //         userFriendlyMessage =
-  //           "Password is too weak. Please choose a stronger password.";
-  //         showSignUpError(userFriendlyMessage);
-  //         goToStep(2);
-  //       } else if (error.code === "auth/invalid-email") {
-  //         userFriendlyMessage = "Please enter a valid email address.";
-  //         showSignUpError(userFriendlyMessage);
-  //         goToStep(1);
-  //       } else {
-  //         showSignUpError(userFriendlyMessage);
-  //       }
-  //     });
-  // }
 
   function handleSignUp() {
     // Validate step 3
@@ -958,13 +767,10 @@ function emailPasswordSignIn() {
     }
   });
 }
-function closeModal() {
-  // Close the guest modal by removing 'show' class
-  const guestModal = document.getElementById("signinmodal");
-  if (guestModal) {
-    guestModal.classList.remove("show");
-  }
 
-  // Remove 'modal-open' class from body
-  document.body.classList.remove("modal-open");
+function closesigningModal() {
+  const body = document.body;
+  const modal = document.getElementById("signinmodal");
+  modal.classList.remove("show");
+  body.classList.remove("modal-open");
 }

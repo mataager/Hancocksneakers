@@ -1,6 +1,6 @@
 // Set the background images using the URLs
 document.getElementById(
-  "panner-img"
+  "main-hero"
 ).style.backgroundImage = `url('${pannerurl}')`;
 
 document.getElementById(
