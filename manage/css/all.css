@@ -164,15 +164,41 @@ body {
 /* Phone Number */
 #pending-orders-section table thead th:nth-child(7),
 /* Telephone Number */
+#pending-orders-section table thead th:nth-child(8),
+/* shipping fees*/
+#pending-orders-section table thead th:nth-child(9),
+/* Cuts*/
+#pending-orders-section table thead th:nth-child(10),
+/* shipping fees*/
 #pending-orders-section table tbody td:nth-child(2),
 /* Customer name */
 #pending-orders-section table tbody td:nth-child(3),
 /* Email */
 #pending-orders-section table tbody td:nth-child(6),
 /* Phone Number */
-#pending-orders-section table tbody td:nth-child(7) {
-  /* Telephone Number */
+#pending-orders-section table tbody td:nth-child(7),
+/* Telephone Number */
+#pending-orders-section table tbody td:nth-child(8),
+/* shipping fees*/
+#pending-orders-section table tbody td:nth-child(9),
+/* Cuts*/
+#pending-orders-section table tbody td:nth-child(10) {
+
   display: none;
+}
+
+#Canceled-orders-table-body td.flex.center.align.items.w-600 button:nth-last-child(-n+2) {
+  display: none !important;
+}
+
+#completed-orders-table-body td.flex.center.align.items.w-600 button:nth-child(5),
+#Canceled-orders-table-body td.flex.center.align.items.w-600 button:nth-child(5) {
+  display: none !important;
+}
+
+#pending-orders-section table tbody td:nth-child(5),
+#pending-orders-section table thead th:nth-child(5) {
+  width: 60px;
 }
 
 .border-15-3px {
@@ -454,6 +480,10 @@ body {
   margin-top: 18px;
 }
 
+.m-0 {
+  margin: 0 !important;
+}
+
 .m-20 {
   margin: 20px;
 }
@@ -504,6 +534,10 @@ body {
 
 .p-7 {
   padding: 7px !important;
+}
+
+.p-10 {
+  padding: 10px !important;
 }
 
 .p-20 {
@@ -585,6 +619,10 @@ body {
 
 .w-500 {
   width: 500px !important;
+}
+
+.w-600 {
+  width: 600px !important;
 }
 
 .w-800 {
@@ -673,6 +711,96 @@ body {
   margin-right: 5px !important;
 }
 
+.flagged-btn {
+  font-size: small;
+  color: #fff;
+  background-color: #48485342;
+  border: 1px solid rgba(255, 255, 255, 0);
+  padding: 1px;
+  border-radius: 4px;
+  margin: 15px;
+  line-height: 1 !important;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease-in-out !important;
+}
+
+.returnbtn {
+  font-size: small;
+  color: #fff;
+  background-color: #48485342;
+  border: 1px solid rgba(255, 255, 255, 0);
+  padding: 1px;
+  border-radius: 4px;
+  margin: 15px;
+  line-height: 1 !important;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.shippingbtn,
+.printbtn,
+.open-orderbtn {
+  height: 35px;
+  width: 35px;
+  font-size: small;
+  color: #fff;
+  background-color: #48485342;
+  border: 1px solid rgba(255, 255, 255, 0);
+  padding: 1px;
+  border-radius: 4px;
+  margin: 15px;
+  line-height: 1 !important;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.shippingbtn i {
+  transition: all 0.5s ease;
+}
+
+.shippingbtn:hover,
+.printbtn:hover,
+.returnbtn:hover,
+.flagged-btn:hover,
+.open-orderbtn:hover {
+  border: 1px solid rgb(255 255 255 / 54%);
+  /* Optional hover background */
+}
+
+@keyframes truckDrive {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  80% {
+    transform: translateX(100%);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.flagged-active i,
+.Shipped-active i,
+.Returned-active i {
+  color: #6a64f1;
+  /* Red color for flagged state */
+}
+
 .addbtn {
   font-size: small;
   color: #fff;
@@ -690,7 +818,7 @@ body {
 
 .addbtn:hover {
   background-color: #6a64f1;
-  color: #0a0914 !important;
+  color: #0a0914;
 }
 
 .addbtn2 {
@@ -1069,12 +1197,21 @@ section {
   overflow-y: scroll !important;
 } */
 
-.order-details tbody {
+/* .order-details tbody {
   border-bottom: solid 2px rgba(255, 255, 255, 0.459);
-}
+} */
 
 .order-details td {
   border-bottom: none !important;
+}
+
+.order-details-td {
+  width: fit-content;
+  display: block;
+}
+
+.order-details {
+  width: max-content !important;
 }
 
 .w-70 {
@@ -1157,11 +1294,11 @@ section {
 }
 
 .spinner-sm {
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3498db;
+  border: 1px solid #f3f3f3;
+  border-top: 1px solid #3498db;
   border-radius: 50%;
-  width: 15px;
-  height: 15px;
+  width: 12px;
+  height: 12px;
   animation: spin 1s linear infinite;
 }
 
@@ -1187,22 +1324,15 @@ section {
 .open-order-btn,
 .accept-order-btn,
 .deaccept-order-btn {
-  background-color: #0a0914 !important;
+  background-color: #48485342 !important;
 }
 
+.accept-order-btn:hover,
+.open-order-btn:hover,
 .deaccept-order-btn:hover {
-  background-color: #6a64f1 !important;
-  color: #000000;
-}
-
-.open-order-btn:hover {
-  background-color: #6a64f1 !important;
-  color: #000000;
-}
-
-.accept-order-btn:hover {
-  background-color: #6a64f1 !important;
-  color: #000000;
+  background-color: #484853;
+  border: 1px solid rgb(255 255 255 / 54%);
+  color: #fff;
 }
 
 .formbold-input-group {
@@ -1545,16 +1675,16 @@ section {
 }
 
 .loc-order-ico {
-  background: #0a0914;
-  border-radius: 50%;
+  background: #48485342;
+  border-radius: 4px;
   padding: 10px;
   width: fit-content;
   transition: all 0.3s ease-in-out !important;
+  border: 1px solid transparent;
 }
 
 .loc-order-ico:hover {
-  background-color: #6a64f1 !important;
-  color: #000000;
+  border: 1px solid rgb(255 255 255 / 54%);
 }
 
 .order-tr:hover {
@@ -2869,4 +2999,107 @@ select:hover {
 
 .error-text {
   color: #ff6b6b !important;
+}
+
+/* /animations/ */
+/* Flag Animation */
+.flagged-btn:hover .bi-flag:not(.text-danger) {
+  animation: waveFlag 0.5s ease-in-out;
+}
+
+@keyframes waveFlag {
+
+  0%,
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+
+  25% {
+    transform: rotate(-10deg) translateY(-3px);
+  }
+
+  50% {
+    transform: rotate(10deg) translateY(0);
+  }
+
+  75% {
+    transform: rotate(-5deg) translateY(-2px);
+  }
+}
+
+
+
+.flagged-active,
+.Shipped-active,
+.Returned-active {
+  border: 1px solid rgb(255 255 255 / 54%);
+}
+
+
+
+/* Print Animation */
+
+
+.sound-toggle-container {
+  display: flex;
+  padding-block: 20px;
+  height: fit-content;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  justify-content: flex-end;
+}
+
+.sound-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sound-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sound-label {
+  font-size: x-small;
+  color: white;
+  /* font-weight: bold; */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.slider {
+  position: relative;
+  cursor: pointer;
+  width: 40px;
+  height: 12px;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 10px;
+  width: 10px;
+  left: 2px;
+  bottom: 1px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked+.slider {
+  background-color: #252450;
+}
+
+input:checked+.slider:before {
+  transform: translateX(26px);
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #252450;
 }

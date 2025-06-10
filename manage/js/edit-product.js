@@ -493,10 +493,80 @@ function triggerFileSelect2(dropZone) {
   }
 }
 
+// async function handleFileSelect2(event, dropZone) {
+//   const file = event.target.files[0];
+//   const formData = new FormData();
+//   formData.append("image", file);
+
+//   const preloader = document.createElement("div");
+//   preloader.classList.add("uploadloader");
+//   dropZone.appendChild(preloader);
+
+//   // Remove any existing upload status elements
+//   const existingUploadStatus =
+//     dropZone.parentElement.querySelector(".upload-status");
+//   if (existingUploadStatus) {
+//     existingUploadStatus.remove();
+//   }
+//   const fileselect = `<input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">`;
+//   const dropZoneId = dropZone.id;
+//   const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+
+//   try {
+//     // Upload the image using Cloudinary
+//     // const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+//     const result = await uploadToBunny(
+//       file,
+//       { accessKey, storageZoneName, storetitle, pullZone },
+//       {
+//         maxWidth: 1200,
+//         maxHeight: 800,
+//         quality: 0.8,
+//         maxSizeKB: 500,
+//       }
+//     );
+//     preloader.remove();
+
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status", "upload-ico");
+
+//     if (result.success) {
+//       const imageUrl = result.data?.link; // Retrieve the image URL
+//       dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
+
+//       const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
+//       if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+//         // Update the corresponding hidden input field
+//         document.getElementById(`img${dropZoneNumber}_${count}`).value =
+//           imageUrl;
+//       }
+
+//       uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
+//     } else {
+//       uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+//     }
+
+//     // Append upload status to the parent of the drop zone
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   } catch (error) {
+//     preloader.remove();
+
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status");
+//     uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${error.message}</p>`;
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   }
+// }
+
 async function handleFileSelect2(event, dropZone) {
   const file = event.target.files[0];
-  const formData = new FormData();
-  formData.append("image", file);
+  if (!file) return;
+
+  // Validate it's an image file
+  if (!file.type.startsWith("image/")) {
+    showErrorStatus(dropZone, "Please upload an image file");
+    return;
+  }
 
   const preloader = document.createElement("div");
   preloader.classList.add("uploadloader");
@@ -505,46 +575,57 @@ async function handleFileSelect2(event, dropZone) {
   // Remove any existing upload status elements
   const existingUploadStatus =
     dropZone.parentElement.querySelector(".upload-status");
-  if (existingUploadStatus) {
-    existingUploadStatus.remove();
-  }
+  if (existingUploadStatus) existingUploadStatus.remove();
+
   const fileselect = `<input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">`;
   const dropZoneId = dropZone.id;
-  const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+  const count = dropZoneId.split("_").pop();
 
   try {
-    // Upload the image using Cloudinary
-    const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+    const result = await uploadToBunny(
+      file, // Using the file directly
+      {
+        accessKey,
+        storageZoneName,
+        storetitle,
+        pullZone,
+      },
+      {
+        maxWidth: 1200,
+        maxHeight: 800,
+        quality: 0.8,
+        maxSizeKB: 500,
+      }
+    );
+
     preloader.remove();
 
+    // Create upload status element
     const uploadStatus = document.createElement("div");
     uploadStatus.classList.add("upload-status", "upload-ico");
 
-    if (result.success) {
-      const imageUrl = result.data?.link; // Retrieve the image URL
-      dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
+    // Bunny.net returns { url } not { success, data }
+    const imageUrl = result.url;
 
-      const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
-      if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
-        // Update the corresponding hidden input field
-        document.getElementById(`img${dropZoneNumber}_${count}`).value =
-          imageUrl;
-      }
+    // Update the dropzone content
+    dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
 
-      uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
-    } else {
-      uploadStatus.innerHTML = `<p><i class="bi bi-cloud-slash red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+    // Update the corresponding hidden input field
+    const dropZoneNumber = dropZoneId.match(/\d+/)[0];
+    if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+      const inputField = document.getElementById(
+        `img${dropZoneNumber}_${count}`
+      );
+      if (inputField) inputField.value = imageUrl;
     }
 
-    // Append upload status to the parent of the drop zone
+    // Show success status
+    uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
     dropZone.parentElement.appendChild(uploadStatus);
   } catch (error) {
     preloader.remove();
-
-    const uploadStatus = document.createElement("div");
-    uploadStatus.classList.add("upload-status");
-    uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${error.message}</p>`;
-    dropZone.parentElement.appendChild(uploadStatus);
+    console.error("Upload error:", error);
+    showErrorStatus(dropZone, error.message);
   }
 }
 
@@ -557,6 +638,78 @@ function handleDragLeave2(event, dropZone) {
   dropZone.classList.remove("drag-over");
 }
 
+// async function handleDrop2(event, dropZone) {
+//   event.preventDefault();
+//   dropZone.classList.remove("drag-over");
+
+//   const files = event.dataTransfer.files;
+//   if (files.length === 0) return;
+
+//   const formData = new FormData();
+//   formData.append("image", files[0]);
+
+//   const preloader = document.createElement("div");
+//   preloader.classList.add("uploadloader");
+//   dropZone.appendChild(preloader);
+
+//   // Remove any existing upload status elements
+//   const existingUploadStatus =
+//     dropZone.parentElement.querySelector(".upload-status");
+//   if (existingUploadStatus) {
+//     existingUploadStatus.remove();
+//   }
+
+//   const fileselect = `<input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">`;
+
+//   const dropZoneId = dropZone.id;
+//   const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+
+//   try {
+//     // Upload the image using Cloudinary
+//     // const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+//     const result = await uploadToBunny(
+//       files[0],
+//       { accessKey, storageZoneName, storetitle, pullZone },
+//       {
+//         maxWidth: 1200,
+//         maxHeight: 800,
+//         quality: 0.8,
+//         maxSizeKB: 500,
+//       }
+//     );
+
+//     preloader.remove();
+
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status");
+
+//     if (result.success) {
+//       const imageUrl = result.data?.link; // Retrieve the image URL
+//       dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
+
+//       const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
+//       if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+//         // Update the corresponding hidden input field
+//         document.getElementById(`img${dropZoneNumber}_${count}`).value =
+//           imageUrl;
+//       }
+
+//       uploadStatus.innerHTML = `<p><i class="bi bi-check-circle-fill blue-check"></i></p>`;
+//     } else {
+//       uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+//     }
+
+//     // Append upload status to the parent of the drop zone
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   } catch (error) {
+//     preloader.remove();
+
+//     const uploadStatus = document.createElement("div");
+//     uploadStatus.classList.add("upload-status");
+//     uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${error.message}</p>`;
+//     dropZone.parentElement.appendChild(uploadStatus);
+//   }
+// }
 async function handleDrop2(event, dropZone) {
   event.preventDefault();
   dropZone.classList.remove("drag-over");
@@ -564,8 +717,11 @@ async function handleDrop2(event, dropZone) {
   const files = event.dataTransfer.files;
   if (files.length === 0) return;
 
-  const formData = new FormData();
-  formData.append("image", files[0]);
+  // Validate it's an image file
+  if (!files[0].type.startsWith("image/")) {
+    showErrorStatus(dropZone, "Please upload an image file");
+    return;
+  }
 
   const preloader = document.createElement("div");
   preloader.classList.add("uploadloader");
@@ -574,48 +730,56 @@ async function handleDrop2(event, dropZone) {
   // Remove any existing upload status elements
   const existingUploadStatus =
     dropZone.parentElement.querySelector(".upload-status");
-  if (existingUploadStatus) {
-    existingUploadStatus.remove();
-  }
+  if (existingUploadStatus) existingUploadStatus.remove();
 
   const fileselect = `<input type="file" accept="image/*" class="hidden-file-input" onchange="handleFileSelect2(event, this.parentElement)">`;
-
   const dropZoneId = dropZone.id;
-  const count = dropZoneId.split("_").pop(); // Extract the count from the drop zone ID
+  const count = dropZoneId.split("_").pop();
 
   try {
-    // Upload the image using Cloudinary
-    const result = await uploadToCloudinary(file, uploadPreset, cloudName);
+    const result = await uploadToBunny(
+      files[0], // Using the file directly
+      {
+        accessKey,
+        storageZoneName,
+        storetitle,
+        pullZone,
+      },
+      {
+        maxWidth: 1200,
+        maxHeight: 800,
+        quality: 0.8,
+        maxSizeKB: 500,
+      }
+    );
+
     preloader.remove();
 
     const uploadStatus = document.createElement("div");
-    uploadStatus.classList.add("upload-status");
+    uploadStatus.classList.add("upload-status", "upload-ico");
 
-    if (result.success) {
-      const imageUrl = result.data?.link; // Retrieve the image URL
-      dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
+    // Bunny.net returns { url } not { success, data }
+    const imageUrl = result.url;
 
-      const dropZoneNumber = dropZoneId.match(/\d+/)[0]; // Extract the number from dropZoneId
-      if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
-        // Update the corresponding hidden input field
-        document.getElementById(`img${dropZoneNumber}_${count}`).value =
-          imageUrl;
-      }
+    // Update the dropzone content
+    dropZone.innerHTML = `<img src="${imageUrl}" style="height: auto;">${fileselect}`;
 
-      uploadStatus.innerHTML = `<p><i class="bi bi-check-circle-fill blue-check"></i></p>`;
-    } else {
-      uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${result.data.error}</p>`;
+    // Update the corresponding hidden input field
+    const dropZoneNumber = dropZoneId.match(/\d+/)[0];
+    if (dropZoneNumber >= 1 && dropZoneNumber <= 6) {
+      const inputField = document.getElementById(
+        `img${dropZoneNumber}_${count}`
+      );
+      if (inputField) inputField.value = imageUrl;
     }
 
-    // Append upload status to the parent of the drop zone
+    // Show success status
+    uploadStatus.innerHTML = `<p><i class="bi bi-cloud-check"></i></p>`;
     dropZone.parentElement.appendChild(uploadStatus);
   } catch (error) {
     preloader.remove();
-
-    const uploadStatus = document.createElement("div");
-    uploadStatus.classList.add("upload-status");
-    uploadStatus.innerHTML = `<p><i class="bi bi-x-circle-fill red-check"></i></p><p class="hidden">${error.message}</p>`;
-    dropZone.parentElement.appendChild(uploadStatus);
+    console.error("Upload error:", error);
+    showErrorStatus(dropZone, error.message);
   }
 }
 
@@ -1032,10 +1196,21 @@ async function handleFileChange(event, imgId) {
   if (file) {
     try {
       // Upload the image to Cloudinary
-      const uploadResponse = await uploadToCloudinary(
+      // const uploadResponse = await uploadToCloudinary(
+      //   file,
+      //   uploadPreset,
+      //   cloudName
+      // );
+
+      const uploadResponse = await uploadToBunny(
         file,
-        uploadPreset,
-        cloudName
+        { accessKey, storageZoneName, storetitle, pullZone },
+        {
+          maxWidth: 1200,
+          maxHeight: 800,
+          quality: 0.8,
+          maxSizeKB: 500,
+        }
       );
 
       if (uploadResponse.success) {
@@ -1124,10 +1299,21 @@ async function updateMainProductImages() {
       preloader.classList.add("uploadloader");
       imgElement.parentElement.appendChild(preloader); // Add preloader in the image container
 
-      const uploadResult = await uploadToCloudinary(
+      // const uploadResult = await uploadToCloudinary(
+      //   file,
+      //   uploadPreset,
+      //   cloudName
+      // );
+
+      const uploadResult = await uploadToBunny(
         file,
-        uploadPreset,
-        cloudName
+        { accessKey, storageZoneName, storetitle, pullZone },
+        {
+          maxWidth: 1200,
+          maxHeight: 800,
+          quality: 0.8,
+          maxSizeKB: 500,
+        }
       );
 
       if (!uploadResult.success) throw new Error(uploadResult.data.error);
