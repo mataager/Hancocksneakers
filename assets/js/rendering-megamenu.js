@@ -303,6 +303,10 @@ const brandsData = [
     name: "UGG",
     logo: "https://cdn.worldvectorlogo.com/logos/ugg-australia.svg",
   },
+   {
+    name: "Hermes",
+    logo: "https://www.svgrepo.com/show/303584/hermes-1-logo.svg",
+  },
   {
     name: "Vans",
     logo: "https://cdn.worldvectorlogo.com/logos/vans-3.svg",
