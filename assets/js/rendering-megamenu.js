@@ -288,6 +288,14 @@ const brandsData = [
     logo: "https://cdn.worldvectorlogo.com/logos/asics-6.svg",
   },
   {
+    name: "Dr Martens",
+    logo: "https://logowik.com/content/uploads/images/dr-martens-airwair9411.jpg",
+  },
+  {
+    name: "Timberland",
+    logo: "https://logowik.com/content/uploads/images/timberland.jpg",
+  },
+  {
     name: "Golden Goose",
     logo: "https://cdn.freelogovectors.net/wp-content/uploads/2023/03/golden-goose-logo-freelogovectors.net_.png",
   },
@@ -300,10 +308,31 @@ const brandsData = [
     logo: "https://cdn.worldvectorlogo.com/logos/onitsuka-tiger-1.svg",
   },
   {
+    name: "Balenciaga",
+    logo: "https://brandlogos.net/wp-content/uploads/2022/01/balenciaga-brandlogo.net_.png",
+  },
+  {
+    name: "McQueen",
+    logo: "https://logowik.com/content/uploads/images/alexander-mcqueen7966.logowik.com.webp",
+  },
+  {
+    name: "Birkenstock",
+    logo: "https://cdn.worldvectorlogo.com/logos/birkenstock-1.svg",
+  },
+  {
+    name: "Lanvin",
+    logo: "https://images.seeklogo.com/logo-png/37/1/lanvin-paris-logo-png_seeklogo-379039.png",
+  },
+  {
+    name: "Salomon",
+    logo: "https://cdn.freebiesupply.com/logos/large/2x/salomon-logo-png-transparent.png",
+  },
+
+  {
     name: "UGG",
     logo: "https://cdn.worldvectorlogo.com/logos/ugg-australia.svg",
   },
-   {
+  {
     name: "Hermes",
     logo: "https://www.svgrepo.com/show/303584/hermes-1-logo.svg",
   },
