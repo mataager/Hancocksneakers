@@ -268,6 +268,46 @@ function showUserForm(itemQty) {
   shippingFeesDisplay.appendChild(shippingFeeValue); // Add hidden element
 
   // Insert shipping fees display before the submit button
+  // Create payment options container and set its HTML
+  const paymentOptions = document.createElement("div");
+  paymentOptions.className = "egys-payment-options";
+  paymentOptions.innerHTML = `
+  <h3 class="egys-payment-title">Payment Method</h3>
+  
+  <div class="egys-payment-method">
+    <input type="radio" id="egys-visa" name="paymentMethod" value="visa" checked class="egys-payment-radio">
+    <label for="egys-visa" class="egys-payment-label">
+      <img src="https://www.logo.wine/a/logo/Visa_Inc./Visa_Inc.-Logo.wine.svg" alt="Visa" class="egys-payment-icon">
+      <span class="egys-payment-text">Credit/Debit Card</span>
+    </label>
+  </div>
+  
+  <div class="egys-payment-method">
+    <input type="radio" id="egys-vodafone" name="paymentMethod" value="vodafone" class="egys-payment-radio">
+    <label for="egys-vodafone" class="egys-payment-label">
+      <img src="https://www.ep4n.net/images/payments/18-1605361721.webp" alt="Vodafone Cash" class="egys-payment-icon">
+      <span class="egys-payment-text">Vodafone Cash</span>
+    </label>
+  </div>
+  <div class="egys-payment-method">
+    <input type="radio" id="egys-valu" name="paymentMethod" value="valu" class="egys-payment-radio">
+    <label for="egys-valu" class="egys-payment-label">
+      <img src="https://valu.com.eg/assets/images/valu.webp" alt="Valu" class="egys-payment-icon">
+      <span class="egys-payment-text">Valu</span>
+    </label>
+</div>
+  
+  <div class="egys-payment-method">
+    <input type="radio" id="egys-cod" name="paymentMethod" value="cod" class="egys-payment-radio">
+    <label for="egys-cod" class="egys-payment-label">
+      <img src="https://icons.veryicon.com/png/o/business/a-set-of-commercial-icons/money-transfer.png" alt="Cash on Delivery" class="egys-payment-icon">
+      <span class="egys-payment-text">Cash on Delivery</span>
+    </label>
+  </div>
+`;
+
+  // Append payment options to the form (before the buttons)
+
   // Function to update shipping fees display
 
   // Add a submit button
@@ -285,6 +325,7 @@ function showUserForm(itemQty) {
   form.appendChild(Addnotesbtn);
   form.appendChild(orderNotesTextArea);
   form.appendChild(shippingFeesDisplay);
+  form.appendChild(paymentOptions);
   form.appendChild(closeButton);
   form.appendChild(infoButton);
   form.appendChild(submitButton);
