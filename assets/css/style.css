@@ -8752,3 +8752,6 @@ ion-icon {
   padding-bottom: 10px;
   width: 25px;
 }
+.stockMessage-p {
+    display: none;
+}
