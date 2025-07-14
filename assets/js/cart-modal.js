@@ -290,7 +290,7 @@ function openCartModal(productId) {
         // }
 
         let salePrice = originalPrice;
-
+        mainPrice = calculateSalePrice(originalPrice, saleAmount);
         if (saleAmount) {
           salePrice = calculateSalePrice(originalPrice, saleAmount);
         }
@@ -329,7 +329,7 @@ function openCartModal(productId) {
                         ? `<del class="pre-sale-animation">${originalPrice} EGP</del>`
                         : ""
                     }
-                    <p class="card-price-animation" id="productPrice">${salePrice} EGP</p>
+                    <p class="card-price-animation" id="productPrice">${mainPrice} EGP</p>
                     </div>
                      </div>
   
