@@ -115,159 +115,6 @@ function openCartModal(productId) {
       const elapsedTime = Date.now() - startTime;
       const remainingTime = Math.max(0, minLoadTime - elapsedTime);
 
-      //       setTimeout(() => {
-      //         // Fade out preloader
-      //         preloader.classList.add("hidden");
-
-      //         // Prepare modal
-      //         const modal = document.querySelector(".modal");
-      //         const modalContent = document.querySelector(".modal-content");
-
-      //         // Set modal position and styles
-      //         modal.style.display = "block";
-      //         document.body.style.overflow = "hidden";
-
-      //         // Rest of your product rendering code...
-      //         const saleAmount = product["sale-amount"];
-      //         const originalPrice = product["Product-Price"];
-      //         const cut = product["matager-Cut"];
-
-      //         function calculateSalePrice(originalPrice, saleAmount) {
-      //           return originalPrice * (1 - saleAmount / 100);
-      //         }
-
-      //         let salePrice = originalPrice;
-
-      //         if (saleAmount) {
-      //           salePrice = calculateSalePrice(originalPrice, saleAmount);
-      //         }
-
-      //         modalContent.productDetails = product; // Store product details in the modal content
-
-      //         // Check and set default image source if necessary
-      //         setDefaultImageSource(product);
-
-      //         // Render product content
-      //         modalContent.innerHTML = `
-      //           <div class="flex justify-content-space-between width-available modal-header">
-      //           <div class="flex center flex-end " onclick="productDetails('${productId}')">
-      //             <button type="button" class="modalbtnL" id="perv4Button">
-      //             <i class="bi bi-box-arrow-in-down-right"></i>
-      //             </button>
-      //         </div>
-      //         <div class="flex center flex-end" onclick="closeModal()">
-      //             <button type="button" class="modalbtnR" id="perv4Button">
-      //                <i class="bi bi-x"></i>
-      //             </button>
-      //         </div>
-      //         </div>
-      //         <h5 class="m-5 BrandName-p pointer" id="BrandName" onclick="brand('${
-      //           product["Brand-Name"]
-      //         }')">${product["Brand-Name"]}</h5>
-      //          <h2 class="m-5 pointer title hidden" onclick="productDetails('${productId}')" id="productTitle">${
-      //           product["product-title"]
-      //         }</h2>
-      //            <div>
-      //         <div class="price-animation-modal-container">
-      //             ${
-      //               saleAmount
-      //                 ? `<del class="pre-sale-animation">${originalPrice} EGP</del>`
-      //                 : ""
-      //             }
-      //             <p class="card-price-animation" id="productPrice">${salePrice} EGP</p>
-      //             </div>
-      //              </div>
-
-      //           </div>
-
-      //             <div style="width:200px">
-      //              <div class="hidden outofstockmessagebannermodal" id="outofstockmessagebanner">out of stock</div>
-      //               <img id="productImage" class="m-5 product-image radius-5 width-available active" src="${
-      //                 product["product-photo"]
-      //               }" alt="Product Image">
-      //             </div>
-
-      //             <div class="m-5 hidden"><h3 class="m-5 flex pb-7 center align-items size-cart-area">Size: <p id="product-Size"></p></h3><div id="size-hint-text" style="display: none; font-size: 16px; color: #333; margin-top: 10px;"></div></div>
-      //             <ul class="mt-5 flex flex-wrap size-buttons-area">${Object.keys(
-      //               product.sizes
-      //             )
-      //               .map(
-      //                 (size) =>
-      //                   `<div class="size-radio m-5" onclick="SizeRef('${size}')"><label class="radio-input_option"><span class="size-value">${size}</span></label></div>`
-      //               )
-      //               .join("")}</ul>
-      //             <div class="relative colors-circels-area">
-      //     <div id="color-hint-text">
-      //     </div>
-      //     <ul id="product-colors" class="color-options m-5 flex-wrap width-80 mb-10 hidden"></ul>
-      //     <div class="color-text-area">
-      //         <label class="" for="product-color">
-      //             <p id="product-selected-color"></p> <!-- Just the color name -->
-      //             <p id="product-selected-color"></p> <!-- Just the color name -->
-      //             <div id="hint" class="hint-text hidden"></div>
-      //         </label>
-      //         <h5 id="stockContainer" class="hidden">
-      //             <p class="stockMessage-p" id="stockMessage"></p>
-      //         </h5>
-      //     </div>
-      //     <div class="m-5 flex align-items hidden">
-      //         SKU:<p id="productID">${productId}</p>
-      //     </div>
-      // </div>
-      //               <div id="BuyNowButton" matagercut="${cut}" onclick="handleBuyNowClick()" class="Buyitnow2">Buy Now
-      //                   <i class="bi bi-lightning"></i>
-      //                 </div>
-      //             <div class="flex center flex-direction-column align-items" id="buybuttonsarea">
-
-      //             <div class="m-5">
-      //               <button id="addToCartButton" onclick="addToCart()" class="Add-to-Cart" disabled style="opacity: 0.5;">Add to Cart <i class="bi bi-exclamation-lg"></i></button>
-      //             </div>
-
-      //               </div>
-      //           `;
-      //         setupPricemodalAnimations();
-      //         // After rendering the modal content:
-      //         setTimeout(() => {
-      //           // Get all size options
-      //           const sizeRadios = modalContent.querySelectorAll(".size-radio");
-
-      //           if (sizeRadios.length > 0) {
-      //             // Get the first size
-      //             const firstSize =
-      //               sizeRadios[0].querySelector(".size-value").textContent;
-
-      //             // Trigger click on first size
-      //             sizeRadios[0].click();
-
-      //             // Wait for colors to load then select first color
-      //             setTimeout(() => {
-      //               const colorOptions =
-      //                 modalContent.querySelectorAll(".color-option");
-
-      //               if (colorOptions.length > 0) {
-      //                 // Get the first color
-      //                 const firstColor =
-      //                   colorOptions[0].getAttribute("data-color-name");
-
-      //                 // Trigger click on first color
-      //                 colorOptions[0].click();
-      //               }
-      //             }, 50);
-      //           }
-      //           modal.classList.add("show");
-      //         }, 50);
-
-      //         // ... rest of your existing code ...
-      //         // Close handler
-      //         modal.addEventListener("click", function (event) {
-      //           if (!modalContent.contains(event.target)) {
-      //             closeModal();
-      //             initModalAnimations();
-      //           }
-      //         });
-      //       }, remainingTime);
-      // Inside your setTimeout where you render the modal content:
-
       setTimeout(() => {
         // Fade out preloader
         preloader.classList.add("hidden");
@@ -302,84 +149,113 @@ function openCartModal(productId) {
 
         // Render product content
         modalContent.innerHTML = `
-                  <div class="flex justify-content-space-between width-available modal-header">
-                  <div class="flex center flex-end " onclick="productDetails('${productId}')">
-                    <button type="button" class="modalbtnL" id="perv4Button">
-                    <i class="bi bi-box-arrow-in-down-right"></i>
-                    </button>
-                </div>
-                <div class="flex center flex-end" onclick="closeModal()">
-                    <button type="button" class="modalbtnR" id="perv4Button">
-                       <i class="bi bi-x"></i>
-                    </button>
-                </div>
-                </div>
-                <h5 class="m-5 BrandName-p pointer" id="BrandName" onclick="brand('${
-                  product["Brand-Name"]
-                }')">${product["Brand-Name"]}</h5>
-                <div id="productTitlearea">
-                 <h2 class="m-5 pointer title hidden" onclick="productDetails('${productId}')" id="productTitle">${
-          product["product-title"]
-        }</h2>
+   <!-- Modal Header -->
+  <div class="flex justify-content-space-between width-available modal-header">
+    <!-- View Product Button -->
+    <div class="flex center flex-end" onclick="productDetails('${productId}')">
+      <button type="button" class="modalbtnL" id="perv4Button" aria-label="View Product Details" 
+              onmouseenter="showHeaderTooltip('View Product Details')"
+              onmouseleave="hideHeaderTooltip()">
+        <i class="bi bi-box-arrow-in-down-right"></i>
+      </button>
+    </div>
+    
+    <!-- Centered Tooltip Container -->
+    <div class="header-tooltip-container" id="headerTooltip"></div>
+    
+    <!-- Close Button -->
+    <div class="flex center flex-end" onclick="closeModal()">
+      <button type="button" class="modalbtnR" id="perv4Button" aria-label="Close Modal"
+              onmouseenter="showHeaderTooltip('Close Modal')"
+              onmouseleave="hideHeaderTooltip()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Modal Body (wraps all other content) -->
+  <div class="modal-body">
+    <h5 class="m-5 BrandName-p pointer" id="BrandName" onclick="brand('${
+      product["Brand-Name"]
+    }')">
+      ${product["Brand-Name"]}
+    </h5>
+    <div id="productTitlearea">
+      <h2 class="m-5 pointer title hidden" onclick="productDetails('${productId}')" id="productTitle">
+        ${product["product-title"]}
+      </h2>
+    </div>
+
+    <!-- Price Section -->
+    <div class="price-animation-modal-container" id="pricecontainer">
+      ${
+        saleAmount
+          ? `<del class="pre-sale-animation">${originalPrice} EGP</del>`
+          : ""
+      }
+      <p class="card-price-animation" id="productPrice">${mainPrice} EGP</p>
+    </div>
+
+    <!-- Product Image -->
+    <div style="width:200px">
+      <div class="hidden outofstockmessagebannermodal" id="outofstockmessagebanner">out of stock</div>
+      <img id="productImage" class="m-5 product-image radius-5 width-available active" src="${
+        product["product-photo"]
+      }" alt="Product Image">
+    </div>
+
+    <!-- Size Selection -->
+    <div class="m-5 hidden">
+      <h3 class="m-5 flex pb-7 center align-items size-cart-area">
+        Size: <p id="product-Size"></p>
+      </h3>
+      <div id="size-hint-text" style="display: none; font-size: 16px; color: #333; margin-top: 10px;"></div>
+    </div>
+    <ul class="mt-5 flex center flex-wrap size-buttons-area">
+      ${Object.keys(product.sizes)
+        .map(
+          (size) => `
+        <div class="size-radio m-5" onclick="SizeRef('${size}')">
+          <label class="radio-input_option">
+            <span class="size-value">${size}</span>
+          </label>
         </div>
-                   <div>
-                <div class="price-animation-modal-container" id="pricecontainer">
-                    ${
-                      saleAmount
-                        ? `<del class="pre-sale-animation">${originalPrice} EGP</del>`
-                        : ""
-                    }
-                    <p class="card-price-animation" id="productPrice">${mainPrice} EGP</p>
-                    </div>
-                     </div>
-  
-                  </div>
-  
-                    <div style="width:200px">
-                     <div class="hidden outofstockmessagebannermodal" id="outofstockmessagebanner">out of stock</div>
-                      <img id="productImage" class="m-5 product-image radius-5 width-available active" src="${
-                        product["product-photo"]
-                      }" alt="Product Image">
-                    </div>
-  
-                    <div class="m-5 hidden"><h3 class="m-5 flex pb-7 center align-items size-cart-area">Size: <p id="product-Size"></p></h3><div id="size-hint-text" style="display: none; font-size: 16px; color: #333; margin-top: 10px;"></div></div>
-                    <ul class="mt-5 flex flex-wrap size-buttons-area">${Object.keys(
-                      product.sizes
-                    )
-                      .map(
-                        (size) =>
-                          `<div class="size-radio m-5" onclick="SizeRef('${size}')"><label class="radio-input_option"><span class="size-value">${size}</span></label></div>`
-                      )
-                      .join("")}</ul>
-                    <div class="relative colors-circels-area">
-            <div id="color-hint-text">
-            </div>
-            <ul id="product-colors" class="color-options m-5 flex-wrap width-80 mb-10 hidden"></ul>
-            <div class="color-text-area">
-                <label class="" for="product-color">
-                    <p id="product-selected-color"></p> <!-- Just the color name -->
-                    <p id="product-selected-color"></p> <!-- Just the color name -->
-                    <div id="hint" class="hint-text hidden"></div>
-                </label>
-                <h5 id="stockContainer" class="hidden">
-                    <p class="stockMessage-p" id="stockMessage"></p>
-                </h5>
-            </div>
-            <div class="m-5 flex align-items hidden">
-                SKU:<p id="productID">${productId}</p>
-            </div>
-        </div>
-                      <div id="BuyNowButton" matagercut="${cut}" onclick="handleBuyNowClick()" class="Buyitnow2">Buy Now
-                          <i class="bi bi-lightning"></i>
-                        </div>
-                    <div class="flex center flex-direction-column align-items" id="buybuttonsarea">
-  
-                    <div class="m-5">
-                      <button id="addToCartButton" onclick="addToCart()" class="Add-to-Cart2" disabled >Add to Cart <i class="bi bi-exclamation-lg"></i></button>
-                    </div>
-  
-                      </div>
-                  `;
+      `
+        )
+        .join("")}
+    </ul>
+
+    <!-- Color Selection -->
+    <div class="relative colors-circels-area">
+      <div id="color-hint-text"></div>
+      <ul id="product-colors" class="color-options m-5 flex-wrap mb-10 hidden"></ul>
+      <div class="color-text-area">
+        <label class="" for="product-color">
+          <p id="product-selected-color"></p>
+          <div id="hint" class="hint-text hidden"></div>
+        </label>
+        <h5 id="stockContainer" class="hidden">
+          <p class="stockMessage-p" id="stockMessage"></p>
+        </h5>
+      </div>
+      <div class="m-5 flex align-items hidden">
+        SKU:<p id="productID">${productId}</p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div id="BuyNowButton" matagercut="${cut}" onclick="handleBuyNowClick()" class="Buyitnow2">
+      Buy Now <i class="bi bi-lightning"></i>
+    </div>
+    <div class="flex center flex-direction-column align-items" id="buybuttonsarea">
+      <div class="m-5">
+        <button id="addToCartButton" onclick="addToCart()" class="Add-to-Cart2" disabled>
+          Add to Cart <i class="bi bi-exclamation-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div> <!-- End of modal-body -->
+`;
         setupPricemodalAnimations();
         // After rendering the modal content:
         setTimeout(() => {
@@ -496,7 +372,7 @@ function colorRef(color) {
 //   const sizeButtons = document.querySelectorAll(".size-radio");
 //   sizeButtons.forEach((button) => {
 //     button.style.backgroundColor =
-//       button.textContent.trim() === size ? "#333" : "";
+//       button.textContent.trim() === size ? "var(--vipcolorop05)" : "";
 //     button.style.color = button.textContent.trim() === size ? "#fff" : "#000";
 //   });
 
@@ -508,8 +384,8 @@ function colorRef(color) {
 //       const qty = colorsForSize[color]["qty"];
 //       return `
 //       <div class="colorOptionwrapper" onclick="colorRef('${color}')">
-//           <div class="color-option" 
-//                data-color-name="${color}" 
+//           <div class="color-option"
+//                data-color-name="${color}"
 //                data-qty="${qty}"
 //                style="background-color: ${colorsForSize[color]["color-value"]}">
 //           </div>
@@ -521,6 +397,7 @@ function colorRef(color) {
 //   updateAddToCartButtonState();
 // }
 
+// v2
 function SizeRef(size) {
   const modalContent = document.querySelector(".modal-content");
   const product = modalContent.productDetails;
@@ -540,7 +417,7 @@ function SizeRef(size) {
   const sizeButtons = document.querySelectorAll(".size-radio");
   sizeButtons.forEach((button) => {
     button.style.backgroundColor =
-    button.textContent.trim() === size ? "rgb(51, 51, 51)" : "";
+      button.textContent.trim() === size ? "var(rgb(51, 51, 51)" : "";
     button.style.color = button.textContent.trim() === size ? "#fff" : "#000";
   });
 
@@ -573,6 +450,7 @@ function SizeRef(size) {
 
   updateAddToCartButtonState();
 }
+
 function updateAddToCartButtonState() {
   const size = document.getElementById("product-Size").innerText.trim(); // Get the selected size
   const color = document
@@ -649,6 +527,3 @@ function updateAddToCartButtonState() {
   addToCartButton.onclick = addToCart;
   buynowButton.onclick = handleBuyNowClick;
 }
-
-
-
