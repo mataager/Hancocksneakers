@@ -174,7 +174,11 @@ function openCartModal(productId) {
   </div>
 
   <!-- Modal Body (wraps all other content) -->
-  <div class="modal-body">
+  <div class="modal-body"style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+">
     <h5 class="m-5 BrandName-p pointer" id="BrandName" onclick="brand('${
       product["Brand-Name"]
     }')">
@@ -527,3 +531,4 @@ function updateAddToCartButtonState() {
   addToCartButton.onclick = addToCart;
   buynowButton.onclick = handleBuyNowClick;
 }
+
