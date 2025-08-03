@@ -27,8 +27,8 @@
             height: auto;
             /* object-fit: contain; */
             grid-area: main;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: var(--s-e-r);
+            box-shadow: 0 0px 2px var(--vipcolorop05);
         }
 
         /* Thumbnail container */
@@ -48,7 +48,7 @@
             width: 80px;
             height: 80px;
             object-fit: cover;
-            border-radius: 4px;
+            border-radius: var(--s-e-r);
             border: 1px solid transparent;
             transition: all 0.2s ease;
         }
@@ -60,7 +60,7 @@
         }
 
         .thumbnail.active {
-            border: 1px solid #666;
+            border: 1px solid var(--vipcolorop05);
             transform: translateY(-3px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -104,7 +104,6 @@
     <script src="./assets/js/static.js"></script>
     <script src="./assets/js/search-product.js"></script>
     <script src="./assets/js/image-error.js"></script>
-    <script src="./assets/js/getdate.js"></script>
     <script src="./assets/js/animation.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -128,11 +127,13 @@
 
         <nav class="navbar" data-navbar="">
 
-            <button class="nav-close-btn black-font" data-nav-close-btn="" aria-label="Close Menu">
-                <ion-icon name="close-outline" role="img" class="md hydrated" aria-label="close outline"></ion-icon>
-            </button>
+            <div class="flex flex-end">
+                <button class="nav-close-btn " data-nav-close-btn="" aria-label="Close Menu">
+                    <ion-icon name="close-outline" role="img" class="md hydrated" aria-label="close outline"></ion-icon>
+                </button>
+            </div>
 
-            <a href="#" class="logo bg-white">
+            <a href="#" class="logo navbarimagearea">
                 <img src="./assets/images/iicon.svg" width="190" height="50" alt="">
             </a>
 
@@ -348,9 +349,10 @@
                                     </div>
 
                                 </div>
+
                                 <div class="m-5 mb-10 flex">
                                     <div>
-                                        <button id="shareProductButton" class="Share-Product button-animate"><i
+                                        <button id="shareProductButton" class="Share-Product button-animate">Copy Link<i
                                                 class="bi bi-link-45deg"></i>
                                         </button>
                                         <div id="copyMessage" style="display: none; color: green; margin-top: 10px;">
@@ -359,7 +361,7 @@
                                     </div>
                                     <div>
                                         <button id="shareWhatsApp" title="Share on WhatsApp"
-                                            class="Share-Product whatsapp button-animate"><i
+                                            class="Share-Product whatsapp button-animate">Share To WhatsApp<i
                                                 class="bi bi-whatsapp"></i></i>
                                         </button>
 
@@ -423,10 +425,10 @@
                                             html: `
         <div style="gap: 10px;display: flex;align-items: center;margin-bottom: 15px;flex-direction: column;">
             <img src="${srcValue}" style="width: 200px; height: 200px; object-fit: cover; margin-right: 15px;">
-            <div style="text-align: center;">
-                <h4 style="margin: 0; font-size: 16px;">${title}</h4>
-                <p style="margin: 5px 0; color: #555;">${productSize} | ${productColor}</p>
-                <p style="margin: 0; font-weight: bold;">${productPrice}</p>
+            <div style="text-align: center;display: flex;gap: 10px;flex-direction: column;">
+                <h4 class="modal-txt">${title}</h4>
+                <p class="modal-txt">${productSize} | ${productColor}</p>
+                <p class="modal-txt">${productPrice}</p>
             </div>
         </div>
     `,
@@ -702,16 +704,7 @@
             colorHintText.style.display = 'none';
         }
     }
-    // Function to handle size selection
-    // function SizeRef(element) {
-    //     const selectedSize = element.querySelector('.size-value').textContent;
-    //     document.getElementById('product-Size').textContent = selectedSize;
-    //     // Update any size hints if necessary
-    //     const sizeHintText = document.getElementById('size-hint-text');
-    //     if (sizeHintText) {
-    //         sizeHintText.style.display = 'none';
-    //     }
-    // }
+
     // Example of calling the function on page load
     document.addEventListener('DOMContentLoaded', () => {
         initializeProductSelections();
@@ -786,7 +779,7 @@
                 let prePriceHTML = '';
                 let productPriceHTML = '';
 
-                 const salePrice = calculateSalePrice(originalPrice, saleAmount);
+                const salePrice = calculateSalePrice(originalPrice, saleAmount);
                 const mainPrice = calculateSalePrice(originalPrice, saleAmount);
                 if (saleAmount) {
                     prePriceHTML = `<p id="preprice" class="m-5 mb-10"><del class="pre-sale">${originalPrice} EGP</del></p>`;
@@ -877,7 +870,27 @@
                 sizeTabs.innerHTML = ''; // Clear previous size options
                 colorOptions.innerHTML = ''; // Clear previous color options
 
-                for (const size in sizes) {
+                const letterSizeOrder = [
+                    'xxxs', 'xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl', 'xxxxl'
+                ];
+
+                let sizeKeys = Object.keys(sizes);
+
+                // Detect whether sizes are all letters
+                const areLetterSizes = sizeKeys.every(s => isNaN(parseInt(s)));
+
+                if (areLetterSizes) {
+                    sizeKeys.sort((a, b) => {
+                        const aIndex = letterSizeOrder.indexOf(a.toLowerCase());
+                        const bIndex = letterSizeOrder.indexOf(b.toLowerCase());
+                        return aIndex - bIndex;
+                    });
+                } else {
+                    sizeKeys.sort((a, b) => parseInt(a) - parseInt(b));
+                }
+
+                // Now render sorted sizes
+                sizeKeys.forEach(size => {
                     const sizeRadio = document.createElement('div');
                     sizeRadio.classList.add('size-radio');
                     sizeRadio.setAttribute('onclick', 'SizeRef(this)');
@@ -894,14 +907,46 @@
                     sizeTabs.appendChild(sizeRadio);
 
                     // Event listener for size selection
+                    // sizeRadio.addEventListener('click', function () {
+                    //     productSizeElement.innerText = size;
+                    //     colorOptions.innerHTML = ''; // Clear color options when size is selected
+
+                    //     hintElement.classList.add('hidden');
+
+                    //     const colors = sizes[size];
+                    //     for (const color in colors) {
+                    //         const colorOption = document.createElement('div');
+                    //         const colorOptionwrapper = document.createElement('div');
+                    //         colorOption.classList.add('color-option');
+                    //         colorOptionwrapper.classList.add('colorOptionwrapper');
+                    //         const qty = colors[color]["qty"];
+
+                    //         colorOption.style.backgroundColor = colors[color]["color-value"];
+                    //         colorOption.setAttribute('data-color-name', color);
+                    //         colorOption.setAttribute('onclick', 'ColorRef(this)');
+                    //         colorOption.setAttribute('color-qty', qty);
+                    //         colorOption.addEventListener('click', function () {
+                    //             var colorName = colorOption.getAttribute('data-color-name');
+                    //             showPreloader();
+                    //             updateProductImages(colorName);
+                    //             setTimeout(() => {
+                    //                 hidePreloader();
+                    //             }, 500);
+                    //         });
+
+                    //         colorOptionwrapper.appendChild(colorOption);
+                    //         colorOptions.appendChild(colorOptionwrapper);
+                    //     }
+                    // });
+
+                    // v2
                     sizeRadio.addEventListener('click', function () {
                         productSizeElement.innerText = size;
                         colorOptions.innerHTML = ''; // Clear color options when size is selected
-
-                        // Hide the hint element
                         hintElement.classList.add('hidden');
 
                         const colors = sizes[size];
+                        let firstColor = null;
 
                         for (const color in colors) {
                             const colorOption = document.createElement('div');
@@ -913,8 +958,8 @@
                             colorOption.style.backgroundColor = colors[color]["color-value"];
                             colorOption.setAttribute('data-color-name', color);
                             colorOption.setAttribute('onclick', 'ColorRef(this)');
-                            colorOption.setAttribute('color-qty', qty); // Add quantity as data attribute
-                            colorOption.addEventListener('click', function (colorName) {
+                            colorOption.setAttribute('color-qty', qty);
+                            colorOption.addEventListener('click', function () {
                                 var colorName = colorOption.getAttribute('data-color-name');
                                 showPreloader();
                                 updateProductImages(colorName);
@@ -922,37 +967,30 @@
                                     hidePreloader();
                                 }, 500);
                             });
-                            // colorOption.addEventListener('click', function () {
-                            //     productColorElement.innerText = color;
-                            //     checkAndToggleButton("product-Size", "product-color", "addToCartButton", "BuyNowButton");
-                            //     const BuyNowButton = document.getElementById('BuyNowButton');
-                            //     // Display stock quantity
-                            //     if (colorOptions) {
-                            //         const colors = sizes[size];
-                            //         for (const color in colors) {
-                            //             const qty = colors[color]["qty"];
-                            //             const stockContainer = document.getElementById('stockContainer');
-                            //             const stockMessage = document.getElementById('stockMessage');
 
-
-                            //             if (stockContainer && stockMessage) {
-                            //                 BuyNowButton.setAttribute('data-qty', qty);
-                            //                 checkStockStatus(qty);
-                            //             }
-                            //         }
-                            //     }
-                            // });
-
-                            // Append colorOption to the wrapper first
                             colorOptionwrapper.appendChild(colorOption);
-
-                            // Then append the wrapper to colorOptions
                             colorOptions.appendChild(colorOptionwrapper);
+
+                            // Store the first color element
+                            if (!firstColor) {
+                                firstColor = colorOption;
+                            }
                         }
 
-                        // checkAndToggleButton("product-Size", "product-color", "addToCartButton", "BuyNowButton");
+                        // Select the first color automatically
+                        if (firstColor) {
+                            ColorRef(firstColor);
+                            // Also trigger the image update if needed
+                            var colorName = firstColor.getAttribute('data-color-name');
+                            showPreloader();
+                            updateProductImages(colorName);
+                            setTimeout(() => {
+                                hidePreloader();
+                            }, 500);
+                        }
                     });
-                }
+
+                });
 
                 checkAndToggleButton("product-Size", "product-color", "addToCartButton", "BuyNowButton");
                 initializeProductSelections();
@@ -1205,12 +1243,7 @@
             element.style.backgroundColor = '';
             element.style.color = '';
         });
-
-        //
-
-        //
-
-        selectedElement.style.backgroundColor = '#333';
+        selectedElement.style.backgroundColor = 'var(--vipcolorop05)';
         selectedElement.style.color = 'white';
 
         // Reset color selection when size changes
@@ -1534,36 +1567,13 @@
     function showProductNotFoundMessage() {
         const productArea = document.getElementById('product-area');
         productArea.innerHTML = `
-        <div class="no-product-message-container" style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 300px;
-            width: 100%;
-            border-radius: 8px;
-            margin: 2rem 0;
-        ">
+        <div class="no-product-message-container">
             <div class="no-products-content">
-                <i class="bi bi-exclamation-octagon-fill" style="
-                      margin-block: 10px;
-                "></i>
-                <p class="no-products-text" style="
-                    font-size: 18px;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                    padding: 10px 0;
-                    color: #333;
-                    font-weight: 500;
-                    margin-bottom: 10px;
-                ">
+                <i class="bi bi-exclamation-octagon-fill"></i>
+                <p class="no-products-text">
                     PRODUCT NOT FOUND
                 </p>
-                <p class="no-products-subtext" style="
-                    margin-block: 10px;
-                    font-size: 14px;
-                    color: #777;
-                    letter-spacing: 0.5px;
-                ">
+                <p class="no-products-subtext">
                     The item you're looking for doesn't exist or may have been removed
                 </p>
                 <div class="flex center">
