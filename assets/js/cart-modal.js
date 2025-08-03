@@ -421,7 +421,7 @@ function SizeRef(size) {
   const sizeButtons = document.querySelectorAll(".size-radio");
   sizeButtons.forEach((button) => {
     button.style.backgroundColor =
-      button.textContent.trim() === size ? "var(rgb(51, 51, 51)" : "";
+    button.textContent.trim() === size ? "var(rgb(51, 51, 51)" : "";
     button.style.color = button.textContent.trim() === size ? "#fff" : "#000";
   });
 
@@ -531,4 +531,5 @@ function updateAddToCartButtonState() {
   addToCartButton.onclick = addToCart;
   buynowButton.onclick = handleBuyNowClick;
 }
+
 
