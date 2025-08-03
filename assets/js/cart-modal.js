@@ -477,6 +477,50 @@ function colorRef(color) {
 
   updateAddToCartButtonState();
 }
+// function SizeRef(size) {
+//   const modalContent = document.querySelector(".modal-content");
+//   const product = modalContent.productDetails;
+//   const choosedSize = document.getElementById("product-Size");
+//   const choosedColor = document.getElementById("product-selected-color");
+
+//   // Clear the color when size changes
+//   choosedColor.innerText = "";
+//   choosedSize.innerText = size;
+
+//   // Also clear any selected color wrappers
+//   document.querySelectorAll(".colorOptionwrapper").forEach((wrapper) => {
+//     wrapper.classList.remove("colorOptionwrapper-selected");
+//   });
+
+//   // Update size buttons' styles
+//   const sizeButtons = document.querySelectorAll(".size-radio");
+//   sizeButtons.forEach((button) => {
+//     button.style.backgroundColor =
+//       button.textContent.trim() === size ? "#333" : "";
+//     button.style.color = button.textContent.trim() === size ? "#fff" : "#000";
+//   });
+
+//   // Display available colors for the selected size
+//   const colorsForSize = product.sizes[size];
+//   const colorList = modalContent.querySelector("#product-colors");
+//   colorList.innerHTML = Object.keys(colorsForSize)
+//     .map((color) => {
+//       const qty = colorsForSize[color]["qty"];
+//       return `
+//       <div class="colorOptionwrapper" onclick="colorRef('${color}')">
+//           <div class="color-option" 
+//                data-color-name="${color}" 
+//                data-qty="${qty}"
+//                style="background-color: ${colorsForSize[color]["color-value"]}">
+//           </div>
+//       </div>`;
+//     })
+//     .join("");
+//   colorList.classList.remove("hidden");
+
+//   updateAddToCartButtonState();
+// }
+
 function SizeRef(size) {
   const modalContent = document.querySelector(".modal-content");
   const product = modalContent.productDetails;
@@ -496,7 +540,7 @@ function SizeRef(size) {
   const sizeButtons = document.querySelectorAll(".size-radio");
   sizeButtons.forEach((button) => {
     button.style.backgroundColor =
-      button.textContent.trim() === size ? "#333" : "";
+    button.textContent.trim() === size ? "rgb(51, 51, 51)" : "";
     button.style.color = button.textContent.trim() === size ? "#fff" : "#000";
   });
 
@@ -508,8 +552,8 @@ function SizeRef(size) {
       const qty = colorsForSize[color]["qty"];
       return `
       <div class="colorOptionwrapper" onclick="colorRef('${color}')">
-          <div class="color-option" 
-               data-color-name="${color}" 
+          <div class="color-option"
+               data-color-name="${color}"
                data-qty="${qty}"
                style="background-color: ${colorsForSize[color]["color-value"]}">
           </div>
@@ -517,6 +561,15 @@ function SizeRef(size) {
     })
     .join("");
   colorList.classList.remove("hidden");
+
+  // Automatically select the first available color
+  const firstColor = Object.keys(colorsForSize)[0];
+  if (firstColor) {
+    // Use setTimeout to ensure the color elements are rendered before selection
+    setTimeout(() => {
+      colorRef(firstColor);
+    }, 0);
+  }
 
   updateAddToCartButtonState();
 }
@@ -596,5 +649,6 @@ function updateAddToCartButtonState() {
   addToCartButton.onclick = addToCart;
   buynowButton.onclick = handleBuyNowClick;
 }
+
 
 
