@@ -1,7 +1,7 @@
 const url = "https://matager-f1f00-default-rtdb.firebaseio.com";
 const storeurl = "https://matager-f1f00-default-rtdb.firebaseio.com";
 const uid = localStorage.getItem("uid");
-const Subscription_amount = "600";
+const Subscription_amount = "750";
 const matager_percentage = 0.015; //1.5%
 
 //image cloud
@@ -25,3 +25,4 @@ let maxStock = 500; // Total stock
 const storetitle = "Hancock Dashboard";
 document.getElementById("title").innerHTML = storetitle;
 //
+
