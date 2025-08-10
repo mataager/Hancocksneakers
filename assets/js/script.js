@@ -111,7 +111,7 @@ function renderProducts() {
 
     // Construct product card HTML
     productCard.innerHTML = `
-      <div class="product-card" tabindex="0">
+      <div class="product-card" tabindex="0" onclick="productDetails('${key}')">
         <figure class="card-banner" id="cardBanner">
           <img src="${
             product["product-photo"]

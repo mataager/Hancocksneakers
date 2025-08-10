@@ -14,14 +14,16 @@ const storeType = "clothing"; // clothing or footwear
 //shipping config
 const maincities = ["Cairo", "Giza", "Alexandria"];
 const freeshipping = "6000";
-const minshipping = 65;
-const maxshipping = 90;
-const specialshipping = 75;
+const minshipping = 80;
+const maxshipping = 80;
+const specialshipping = 80;
 const vanishedstock = false;
 const outofstock = true;
 const flippedimages = false;
 const autopricehandle = true;
 const codfees = 10;
+
+const theme = "black";
 
 // guest checkout
 const GuestEmail = "hancockstoreguest@gmail.com";
@@ -30,6 +32,6 @@ const pannerurl =
   "https://mir-s3-cdn-cf.behance.net/project_modules/max_632/c514f7186252949.6571da71a3792.gif";
 //
 const newarrivalurl =
-  "https://mir-s3-cdn-cf.behance.net/project_modules/hd/93ce64214535109.6759b799b17bd.png";
+  "https://mir-s3-cdn-cf.behance.net/project_modules/disp_webp/9e6e4631474101.56059d3ce8ec8.jpg";
 const saleurl =
-  "https://mir-s3-cdn-cf.behance.net/project_modules/hd/da8b83214535109.6759b799b133b.png";
+  "https://mir-s3-cdn-cf.behance.net/project_modules/disp_webp/b5736231474097.56059d474b92f.jpg";

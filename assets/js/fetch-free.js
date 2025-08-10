@@ -62,7 +62,7 @@ async function fetchAndRenderProducts() {
             getColorOptionsAndStockInfo(product);
           // Adjust this part according to your product card structure
           productCard.innerHTML = `
-            <div class="product-card" tabindex="0">
+            <div class="product-card" tabindex="0" onclick="productDetails('${key}')">
               <figure class="card-banner">
                 <img src="${product["product-photo"]}" width="312" height="350" alt=""class="image-contain" id="swipe1">
                 <img src="${product["product-photo2"]}" width="312" height="350" alt="" id="swipe2" class="image-contain" style="display: none;">
@@ -137,7 +137,7 @@ async function fetchAndRenderProducts() {
 
           // Construct product card HTML (your existing logic)
           productCard.innerHTML = `
-            <div class="product-card" tabindex="0">
+            <div class="product-card" tabindex="0" onclick="productDetails('${key}')">
               <figure class="card-banner">
                 <img src="${
                   product["product-photo"]
@@ -310,7 +310,7 @@ function renderSaleItems(products, saleContainer) {
         getColorOptionsAndStockInfo(product);
 
       productCard.innerHTML = `
-        <div class="product-card" tabindex="0">
+        <div class="product-card" tabindex="0" onclick="productDetails('${key}')">
           <figure class="card-banner">
             <img src="${
               product["product-photo"]
@@ -409,7 +409,7 @@ function renderBestSellers(products, bestSellersContainer) {
       getColorOptionsAndStockInfo(product);
 
     productCard.innerHTML = `
-      <div class="product-card" tabindex="0">
+      <div class="product-card" tabindex="0" onclick="productDetails('${key}')">
         <figure class="card-banner">
           <img src="${
             product["product-photo"]
