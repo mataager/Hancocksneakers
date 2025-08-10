@@ -32,6 +32,7 @@ const pannerurl =
   "https://mir-s3-cdn-cf.behance.net/project_modules/max_632/c514f7186252949.6571da71a3792.gif";
 //
 const newarrivalurl =
-  "https://mir-s3-cdn-cf.behance.net/project_modules/disp_webp/9e6e4631474101.56059d3ce8ec8.jpg";
+  "https://urbanindustry2f-co-uk.myshopify.com/cdn/shop/products/adidas_superstar_shoe_footwearwhitecoreblack_2.jpg?v=1597089716";
 const saleurl =
   "https://mir-s3-cdn-cf.behance.net/project_modules/disp_webp/b5736231474097.56059d474b92f.jpg";
+
