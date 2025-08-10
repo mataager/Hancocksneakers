@@ -32,7 +32,8 @@ const pannerurl =
   "https://mir-s3-cdn-cf.behance.net/project_modules/max_632/c514f7186252949.6571da71a3792.gif";
 //
 const newarrivalurl =
-  "https://urbanindustry2f-co-uk.myshopify.com/cdn/shop/products/adidas_superstar_shoe_footwearwhitecoreblack_2.jpg?v=1597089716";
+  "https://image.goxip.com/8oU4kWhtMzpD6z2Ppt35pzlHxh4=/fit-in/500x500/filters:format(jpg):quality(80):fill(white)/https:%2F%2Fimages.asos-media.com%2Fproducts%2Fadidas-originals-superstar-xlg-trainers-in-white-black%2F204475137-1-black%3F$XXL$";
 const saleurl =
   "https://mir-s3-cdn-cf.behance.net/project_modules/disp_webp/b5736231474097.56059d474b92f.jpg";
+
 
