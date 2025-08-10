@@ -184,11 +184,184 @@
 
 
 
-            <div class="brands-container">
+            <!-- <div class="brands-container">
                 <div class="brands-scroller" id="brandsScroller">
 
                 </div>
+            </div> -->
+
+            <div class="brands-wrapper">
+                <button class="scroll-btn left" id="scrollLeft">&#10094;</button>
+
+                <div class="brands-container" id="brandsScroller">
+                </div>
+                <style>
+                    .brands-wrapper {
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        max-width: 100%;
+                        overflow: hidden;
+                    }
+
+                    .brands-container {
+                        display: flex;
+                        gap: 15px;
+                        overflow-x: auto;
+                        /* scroll-behavior: smooth; */
+                        scrollbar-width: none;
+                        /* Firefox */
+                    }
+
+                    .brands-container::-webkit-scrollbar {
+                        display: none;
+                        /* Chrome/Safari */
+                    }
+
+                    .brand-item {
+                        flex: 0 0 auto;
+                        width: 80px;
+                        height: 80px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background: white;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        transition: transform 0.2s ease;
+                    }
+
+                    .brand-item img {
+                        max-width: 60px;
+                        max-height: 60px;
+                    }
+
+                    .brand-item:hover {
+                        transform: scale(1.1);
+                    }
+
+                    .scroll-btn {
+                        display: none;
+                        height: 30px;
+                        width: 30px;
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        z-index: 10;
+                        background: rgb(0 0 0);
+                        border: none;
+                        padding: 10px;
+                        cursor: pointer;
+                        font-size: 10px;
+                        border-radius: 50%;
+                        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .scroll-btn.left {
+                        left: 5px;
+                    }
+
+                    .scroll-btn.right {
+                        right: 5px;
+                    }
+
+                    .scroll-btn:hover {
+                        color: black;
+                        background: white;
+                    }
+                </style>
+
+
+                <button class="scroll-btn right" id="scrollRight">&#10095;</button>
+                <script>
+                    const scroller = document.getElementById("brandsScroller");
+                    const btnLeft = document.getElementById("scrollLeft");
+                    const btnRight = document.getElementById("scrollRight");
+
+                    // Scroll by clicking buttons
+                    btnLeft.addEventListener("click", () => {
+                        scroller.scrollBy({ left: -200, behavior: "smooth" });
+                    });
+
+                    btnRight.addEventListener("click", () => {
+                        scroller.scrollBy({ left: 200, behavior: "smooth" });
+                    });
+
+                    // Touch swipe support
+                    let isDown = false;
+                    let startX;
+                    let scrollLeftPos;
+
+                    scroller.addEventListener("mousedown", (e) => {
+                        isDown = true;
+                        startX = e.pageX - scroller.offsetLeft;
+                        scrollLeftPos = scroller.scrollLeft;
+                        stopAutoScroll(); // stop auto scroll on drag
+                    });
+
+                    scroller.addEventListener("mouseleave", () => {
+                        isDown = false;
+                    });
+
+                    scroller.addEventListener("mouseup", () => {
+                        isDown = false;
+                    });
+
+                    scroller.addEventListener("mousemove", (e) => {
+                        if (!isDown) return;
+                        e.preventDefault();
+                        const x = e.pageX - scroller.offsetLeft;
+                        const walk = (x - startX) * 2;
+                        scroller.scrollLeft = scrollLeftPos - walk;
+                    });
+
+                    // Mobile touch events
+                    let startTouchX = 0;
+                    scroller.addEventListener("touchstart", (e) => {
+                        startTouchX = e.touches[0].clientX;
+                        stopAutoScroll(); // stop auto scroll on touch
+                    }, { passive: true });
+
+                    scroller.addEventListener("touchmove", (e) => {
+                        const touchX = e.touches[0].clientX;
+                        const deltaX = startTouchX - touchX;
+                        scroller.scrollLeft += deltaX;
+                        startTouchX = touchX;
+                    }, { passive: true });
+
+                    scroller.addEventListener("touchend", () => {
+                        startAutoScroll(); // resume auto scroll after touch ends
+                    });
+
+                    // Auto-scroll feature
+                    let autoScrollInterval;
+                    function startAutoScroll() {
+                        stopAutoScroll(); // ensure no duplicate intervals
+                        autoScrollInterval = setInterval(() => {
+                            scroller.scrollLeft += 2; // speed
+                            if (scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth) {
+                                scroller.scrollLeft = 2; // loop back
+                            }
+                        }, 20); // interval speed
+                    }
+
+                    function stopAutoScroll() {
+                        clearInterval(autoScrollInterval);
+                    }
+
+                    // Pause auto-scroll on hover
+                    scroller.addEventListener("mouseenter", stopAutoScroll);
+                    scroller.addEventListener("mouseleave", startAutoScroll);
+
+                    // Start auto-scroll when page loads
+                    startAutoScroll();
+
+
+                </script>
             </div>
+
 
 
 
